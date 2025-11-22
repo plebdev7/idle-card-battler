@@ -1,10 +1,7 @@
-import { GameDebugView } from "./components/GameDebugView";
-import { useGameLoop } from "./gameLoop";
+import { CombatScreen } from "./features/combat/components/CombatScreen";
 
 function App() {
-	useGameLoop();
-
-	return <GameDebugView />;
+	return <CombatScreen />;
 }
 
 export default App;

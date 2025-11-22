@@ -21,8 +21,8 @@
         *   [ ] **Enemy Movement**: Progression from Spawn -> Tower.
         *   [ ] **Damage**: Card effects -> Enemy HP; Enemy Attack -> Tower HP.
         *   [ ] **Win/Loss**: Run ends when Tower HP = 0.
-    *   [ ] **Basic AI (The "Wizard")**:
-        *   [ ] **Tier 1 Logic**: Play playable cards on cooldown (Random or First Available).
+    *   [x] **Basic AI (The "Wizard")**:
+        *   [x] **Tier 1 Logic**: Play playable cards on cooldown (Random or First Available).
         *   [ ] **Targeting**: Simple heuristic (e.g., Frontmost enemy).
 
 ## Phase 3: The Vertical Slice
