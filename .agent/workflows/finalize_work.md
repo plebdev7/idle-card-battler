@@ -14,10 +14,13 @@ description: Finalize a unit of work (clean, verify, commit)
 
 3. Documentation Review
    Ensure all documentation is up to date.
-   - [ ] Update `.agent/task.md` (mark completed items)
-   - [ ] Update `walkthrough.md` (document new features/changes)
-   - [ ] Update `implementation_plan.md` (if plans changed)
-   - [ ] Update `docs/` (if architecture or design changed)
+   - [ ] **Product Docs**: Update `docs/` (Design, Roadmap) if features changed.
+   - [ ] **Agent Docs**: Update `.agent/` (Conventions, Workflows) if processes changed.
+   - [ ] **Brain Sync**: Update `task.md` and `walkthrough.md` in your internal brain.
+
+4. Artifact Cleanup (CRITICAL)
+   - [ ] **Check Repo**: Ensure `task.md`, `implementation_plan.md`, and `walkthrough.md` are NOT in the repo root or `.agent/`.
+   - [ ] **Delete**: If found in the repo, DELETE them (they belong in brain only).
 
 4. Version Control
    Stage and commit your changes.

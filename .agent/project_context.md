@@ -1,6 +1,11 @@
 # Project Context & Design Pillars
 
-> **Note to Agents**: Read this file first to understand the "Soul" of the project.
+## 🧭 Agent Navigation
+*   **Operational Guide**: [agent_guide.md](file:///c:/devel/checkout/idle-card-battler-1/.agent/agent_guide.md) (Read this for rules on artifacts and workflows)
+*   **Tech Conventions**: [conventions.md](file:///c:/devel/checkout/idle-card-battler-1/.agent/conventions.md)
+*   **Product Documentation**: [docs/](file:///c:/devel/checkout/idle-card-battler-1/docs/)
+
+> **Note to Agents**: This file contains the "Soul" and high-level vision of the project. For *how* to work, see the **Operational Guide**.
 
 ## 1. The Vision
 **"Slay the Spire meets an Idle Game, in a Wizard's Tower."**

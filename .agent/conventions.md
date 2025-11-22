@@ -7,14 +7,7 @@
 *   **Testing**: Vitest
 
 ## Agent Workflow
-1.  **Start**: Read `.agent/task.md` to find the next item.
-2.  **Plan**: Create/Update `implementation_plan.md` for complex features.
-3.  **Execute**: Write code.
-4.  **Verify**:
-    *   Run `npm test` for logic.
-    *   Run `npm run lint` for style.
-    *   Use **Browser Subagent** to verify UI.
-5.  **End**: Update `.agent/task.md` with progress.
+> **Moved**: See [agent_guide.md](file:///c:/devel/checkout/idle-card-battler-1/.agent/agent_guide.md) for operational workflows and artifact policies.
 
 ## Coding Standards
 *   **Functional Components**: Use React functional components with hooks.

@@ -9,13 +9,14 @@ Follow this workflow when the user asks to "design" or "spec out" a specific par
 1.  **Context Review**:
     *   Read `design_doc.md` to understand the high-level goals.
     *   Read `.agent/project_context.md` to align with Design Pillars.
+    *   Read `.agent/agent_guide.md` for operational rules.
 
 2.  **Requirement Gathering**:
     *   Ask the user clarifying questions if the scope is vague.
     *   *Example*: "For the Battle System, do we need to handle status effects yet?"
 
 3.  **Drafting the Spec**:
-    *   Create a new markdown file in `specs/` (e.g., `specs/battle_logic.md`).
+    *   Create a new markdown file in `docs/specs/` (e.g., `docs/specs/002_battle_logic.md`).
     *   Include:
         *   **Overview**: What is this feature?
         *   **Data Structures**: JSON-like representation of the objects (Cards, Units).
