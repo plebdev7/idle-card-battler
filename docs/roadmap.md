@@ -1,18 +1,18 @@
 # Project Roadmap: Idle Card Battler
 
-## Phase 1: Design & Architecture (Current)
+## Phase 1: Design & Architecture (Complete)
 *   **Goal**: Define *what* we are building and *how* it works before writing code.
 *   **Deliverables**:
     *   [x] High-Level Design Doc (`design_doc.md`)
-    *   [ ] Low-Level Specs (Battle Logic, Card Attributes, UI Flow)
-    *   [ ] Technical Architecture Plan (Data Structures, State Management)
+    *   [x] Low-Level Specs (Battle Logic, Card Attributes, UI Flow)
+    *   [x] Technical Architecture Plan (Data Structures, State Management)
 
-## Phase 2: Prototyping (The "Greybox")
+## Phase 2: Prototyping (The "Greybox") (Complete)
 *   **Goal**: Prove the "Fun" of the Core Loop. Ugly graphics, real logic.
 *   **Deliverables**:
-    *   Playable Battle Simulator (Console or basic UI).
-    *   Implementation of the "Idle Deck Cycle".
-    *   Basic AI Logic (Random vs Priority).
+    *   [x] Playable Battle Simulator (Console or basic UI).
+    *   [x] Implementation of the "Idle Deck Cycle".
+    *   [x] Basic AI Logic (Random vs Priority).
 
 ## Phase 3: The Vertical Slice
 *   **Goal**: One fully polished "Floor" of gameplay.

@@ -14,10 +14,11 @@
     *   **Goal**: Expand the Grimoire and find rare "Chase Cards" (Legendary Spells, Unique Summons).
 2.  **The Run (Roguelite)**:
     *   **Setup**: Construct a "Starter Deck" (e.g., 10 cards) from your Grimoire.
-    *   **Climb**: Enter the Tower. Fight wave after wave.
-    *   **Drafting**: During the run, you find *temporary* Artifacts or "Glyphs" that buff your current deck for this run only.
-    *   **Death**: When the Tower falls, the run ends. You lose all temporary buffs/progress in the tower.
-    *   **Reward**: You keep Gold/Essence earned to upgrade your persistent Grimoire.
+    *   **Climb**: Enter the Tower. Fight through **Discrete Floors** (5 Waves per Floor).
+    *   **Break Room**: Between floors, visit the Shop/Rest site. Buy **Temporary Artifacts** or **Card Mods** (e.g., "+2 Dmg this run").
+    *   **No Deckbuilding**: You cannot add/remove cards from your deck during a run. Your loadout is fixed.
+    *   **Death**: When the Tower falls, the run ends. You lose all temporary buffs/progress.
+    *   **Reward**: You keep Gold/Essence earned. Gold is converted or lost; Essence is kept.
 
 ## 3. Gameplay Mechanics: The Idle Card System
 
@@ -32,7 +33,11 @@ To make card games work in an idle format, we need to automate the "Decision Mak
 *   **Mana System**:
     *   Mana regenerates over time (Mana per second).
     *   Cards have Mana Costs.
-*   **Shuffle**: When the Draw Pile is empty, the Discard Pile is shuffled into the Draw Pile.
+    *   **Shuffle**: When the Draw Pile is empty, the Discard Pile is shuffled into the Draw Pile.
+
+### 3.2 Idle Support (Full Automation)
+*   **Auto-Continue**: Players can toggle an option to automatically proceed through Break Rooms.
+*   **Logic**: The game will automatically buy the best affordable upgrade (based on simple heuristics) or save gold, then continue to the next floor after a short delay.
 
 ### 3.2 AI Logic & Progression (The "Wizard's Wisdom")
 The Wizard's ability to play cards intelligently is not static; it is a progression system itself. As you level up your Wizard, you unlock more control over the auto-battler.
@@ -83,6 +88,7 @@ The system is built to support hundreds of cards across different "Schools of Ma
 ## 5. Progression Systems
 
 ### 5.1 The Grimoire (Collection)
+*   **Card Packs**: Spend Essence to buy "Standard Packs" containing random cards.
 *   **Level Up**: Duplicate cards (Shards) increase card stats (Damage, Heal amount).
 *   **Mastery**: Using a card often unlocks "Mastery" which might add a small secondary effect (e.g., "Fireball now also applies minor Burn").
 
@@ -90,7 +96,15 @@ The system is built to support hundreds of cards across different "Schools of Ma
 *   **Talents**: Passive tree. (+Mana Regen, +Tower HP, +Draw Speed).
 *   **Robes/Staves**: Equipment that buffs specific Schools of Magic.
 
-## 6. Open Questions / Next Steps
-1.  **Enemy Variety**: How do enemies challenge the deck? (Shielded enemies requiring heavy hits? Fast enemies requiring AOE?)
-2.  **The "Run" Structure**: Is it infinite waves until death? Or discrete "Floors" with breaks in between to shop/rest?
-    *   *Recommendation*: Discrete Floors (Wave 1-10 -> Boss -> Shop). Allows for pacing breaks.
+## 6. Enemy Design
+Enemies demand specific answers from the player's deck.
+
+### 6.1 Archetypes
+*   **Swarm**: Low HP, High Speed, Group spawns. (Counter: AOE).
+*   **Tank**: High HP, High Armor. (Counter: True Damage / Single Target).
+*   **Ranged**: Attacks Tower from range. (Counter: Snipe / Fast Summons).
+*   **Assassin**: Ignores Summons, targets Tower. (Counter: Taunt / CC).
+
+## 7. Next Steps
+1.  **Prototyping**: Build the "Greybox" battle simulator.
+2.  **Tech Stack**: Define State Management (Zustand) and Game Loop.
