@@ -1,13 +1,13 @@
 # Idle Card Battler - High Level Design Document
 
-## 1. Core Concept
+## 1. Core Concept [DECIDED]
 **Pitch**: You are a Wizard defending your Tower against endless waves of darkness. You build a deck of spells and summon minions to fight for you. The game plays itself, but your deck-building strategy determines how far you climb before you are overwhelmed. Death is inevitable, but your knowledge (and card collection) grows with every failure.
 
 **Theme**: **Dark Fantasy / Wizard Tower Defense**.
 *   **Visuals**: Grim, magical, arcane circles, hordes of undead/demons.
 *   **Perspective**: **Single Point Defense**. The Tower is on the left (or center), enemies swarm from the right (or all sides).
 
-## 2. Core Loop (Roguelite + Collection)
+## 2. Core Loop (Roguelite + Collection) [DECIDED]
 1.  **The Collection (Persistent)**:
     *   You have a "Grimoire" (Binder) of hundreds of cards.
     *   Cards are permanently collected and leveled up using resources from runs.
@@ -20,9 +20,9 @@
     *   **Death**: When the Tower falls, the run ends. You lose all temporary buffs/progress.
     *   **Reward**: You keep Gold/Essence earned. Gold is converted or lost; Essence is kept.
 
-## 3. Gameplay Mechanics: The Idle Card System
+## 3. Gameplay Mechanics: The Idle Card System [DRAFT]
 
-### 3.1 The "Idle" Deck Cycle
+### 3.1 The "Idle" Deck Cycle [SPEC](specs/002_idle_deck_cycle.md)
 To make card games work in an idle format, we need to automate the "Decision Making" while keeping the "Randomness" fun.
 
 *   **The Deck**: A small, consistent deck (e.g., 8-15 cards).
@@ -35,11 +35,11 @@ To make card games work in an idle format, we need to automate the "Decision Mak
     *   Cards have Mana Costs.
     *   **Shuffle**: When the Draw Pile is empty, the Discard Pile is shuffled into the Draw Pile.
 
-### 3.2 Idle Support (Full Automation)
+### 3.2 Idle Support (Full Automation) [DRAFT]
 *   **Auto-Continue**: Players can toggle an option to automatically proceed through Break Rooms.
 *   **Logic**: The game will automatically buy the best affordable upgrade (based on simple heuristics) or save gold, then continue to the next floor after a short delay.
 
-### 3.2 AI Logic & Progression (The "Wizard's Wisdom")
+### 3.2 AI Logic & Progression (The "Wizard's Wisdom") [DECIDED]
 The Wizard's ability to play cards intelligently is not static; it is a progression system itself. As you level up your Wizard, you unlock more control over the auto-battler.
 
 *   **Tier 1: Novice (Random)**
@@ -56,7 +56,7 @@ The Wizard's ability to play cards intelligently is not static; it is a progress
     *   Full programmable logic (simplified FF12 Gambits).
     *   *Example*: "If Enemy = Boss AND Mana > 5 -> Cast 'Death Ray'."
 
-### 3.3 Managing Randomness (Strategy vs Luck)
+### 3.3 Managing Randomness (Strategy vs Luck) [DRAFT]
 Since the player isn't manually choosing cards, "Bad Draw RNG" can feel frustrating. We mitigate this with **Deck Building Mechanics**:
 
 1.  **Cycling / Cantrips**: Low-cost cards that "Draw a Card". Essential for digging through the deck to find your win conditions.
@@ -64,7 +64,7 @@ Since the player isn't manually choosing cards, "Bad Draw RNG" can feel frustrat
 3.  **Tutors**: Cards that search for other cards (e.g., "Summon Imp: Draw a Fire Spell").
 4.  **The "Panic Button"**: A player-activated "Ultimate" (long cooldown) that reshuffles the hand or clears the screen. Gives the player *some* agency during the idle phase.
 
-## 4. Card Design Space
+## 4. Card Design Space [SPEC](specs/cards_basic_set.md)
 The system is built to support hundreds of cards across different "Schools of Magic".
 
 ### 4.1 Schools of Magic (Archetypes)
@@ -85,7 +85,7 @@ The system is built to support hundreds of cards across different "Schools of Ma
     *   *Example*: "Phoenix Feather" - If you die, revive with 50% HP and deal massive damage. (One use per run).
     *   *Example*: "Time Stop" - Freeze all enemies for 5 seconds.
 
-## 5. Progression Systems
+## 5. Progression Systems [DRAFT]
 
 ### 5.1 The Grimoire (Collection)
 *   **Card Packs**: Spend Essence to buy "Standard Packs" containing random cards.
@@ -96,7 +96,7 @@ The system is built to support hundreds of cards across different "Schools of Ma
 *   **Talents**: Passive tree. (+Mana Regen, +Tower HP, +Draw Speed).
 *   **Robes/Staves**: Equipment that buffs specific Schools of Magic.
 
-## 6. Enemy Design
+## 6. Enemy Design [SPEC](specs/001_run_and_enemies.md)
 Enemies demand specific answers from the player's deck.
 
 ### 6.1 Archetypes

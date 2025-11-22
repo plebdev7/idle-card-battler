@@ -7,12 +7,13 @@ description: Turn a spec or task into working code
 Follow this workflow when you are ready to write code for a specific task or feature.
 
 1.  **Preparation & Context**
-    *   Read `task.md` to identify the current objective.
+    *   Read `task.md` (use absolute path from system instructions `<task_artifact>`) to identify the current objective.
     *   Read `.agent/project_context.md` and `.agent/agent_guide.md` to ensure alignment.
+    *   Read `docs/coding_standards.md` to ensure code style compliance.
     *   Read any relevant design specs in `docs/specs/`.
 
 2.  **Implementation Planning**
-    *   **Create/Update Plan**: Open `implementation_plan.md`.
+    *   **Create/Update Plan**: Open `implementation_plan.md` (use absolute path from system instructions `<implementation_plan_artifact>`).
     *   **Define Changes**: List files to modify, new files to create, and dependencies to add.
     *   **Risk Assessment**: Identify potential breaking changes or side effects.
     *   **User Review**: Use `notify_user` to get approval on the plan *before* writing code.
@@ -28,6 +29,6 @@ Follow this workflow when you are ready to write code for a specific task or fea
     *   **Manual Verification**: Verify the feature in the browser or via command line.
 
 5.  **Documentation & Cleanup**
-    *   **Update Artifacts**: Mark items as done in `task.md`.
-    *   **Walkthrough**: Update `walkthrough.md` with proof of work (screenshots/logs).
+    *   **Update Artifacts**: Mark items as done in `task.md` (use absolute path from system instructions).
+    *   **Walkthrough**: Update `walkthrough.md` (use absolute path from system instructions `<walkthrough_artifact>`) with proof of work (screenshots/logs).
     *   **Reflect**: Does the implementation match the plan? If not, explain why in the walkthrough.

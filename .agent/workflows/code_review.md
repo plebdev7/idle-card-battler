@@ -12,6 +12,7 @@ Follow this workflow to critique and improve code before finalizing it.
 
 2.  **Style & Consistency Check**
     *   **Guide Alignment**: Does the code follow `.agent/agent_guide.md`?
+    *   **Standards Check**: Does the code adhere to `docs/coding_standards.md`?
     *   **Naming**: Are variable/function names descriptive and consistent?
     *   **Complexity**: Are functions too long? Is logic deeply nested?
     *   **Comments**: Are complex sections explained? Are there outdated comments?
@@ -27,4 +28,4 @@ Follow this workflow to critique and improve code before finalizing it.
 
 5.  **Action Plan**
     *   If issues are found, fix them immediately.
-    *   If major refactoring is needed, update `task.md` and discuss with the user.
+    *   If major refactoring is needed, update `task.md` (use absolute path from system instructions) and discuss with the user.

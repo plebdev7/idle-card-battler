@@ -11,11 +11,17 @@ Follow this workflow when the user asks to "design" or "spec out" a specific par
     *   Read `.agent/project_context.md` to align with Design Pillars.
     *   Read `.agent/agent_guide.md` for operational rules.
 
-2.  **Requirement Gathering**:
+2.  **Task Initialization**:
+    *   **Update `task.md`**: Break down the design process into steps (e.g., "Research", "Draft Spec", "Review"). **IMPORTANT**: Use the absolute path for `task.md` found in your system instructions (under `<task_artifact>`).
+    *   **Create `implementation_plan.md`**: Briefly outline the scope of the design work. **IMPORTANT**: Use the absolute path for `implementation_plan.md` found in your system instructions (under `<implementation_plan_artifact>`).
+        *   *Goal*: Define what questions this spec needs to answer.
+        *   *Proposed Changes*: List the new spec file to be created (e.g., `docs/specs/002_...md`).
+
+3.  **Requirement Gathering**:
     *   Ask the user clarifying questions if the scope is vague.
     *   *Example*: "For the Battle System, do we need to handle status effects yet?"
 
-3.  **Drafting the Spec**:
+4.  **Drafting the Spec**:
     *   Create a new markdown file in `docs/specs/` (e.g., `docs/specs/002_battle_logic.md`).
     *   Include:
         *   **Overview**: What is this feature?
@@ -23,10 +29,10 @@ Follow this workflow when the user asks to "design" or "spec out" a specific par
         *   **Logic/Flow**: Pseudocode or step-by-step algorithms.
         *   **Edge Cases**: What happens if X and Y happen at the same time?
 
-4.  **Review & Iterate**:
+5.  **Review & Iterate**:
     *   Use `notify_user` to present the spec.
     *   Iterate based on feedback.
 
-5.  **Finalize**:
+6.  **Finalize**:
     *   Link the new spec in `design_doc.md` (if applicable).
     *   Update `task.md` to mark the design task as complete and add Implementation tasks.

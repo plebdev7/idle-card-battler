@@ -16,27 +16,11 @@ We will use a **Decoupled Game Loop** pattern.
 
 ## 3. State Management (Zustand)
 ### 3.1 Store Structure
-```typescript
-interface GameState {
-  // Resources
-  gold: number;
-  mana: number;
-  maxMana: number;
-  
-  // Combat State
-  enemies: Enemy[];
-  deck: Card[];
-  hand: Card[];
-  discard: Card[];
-  
-  // Tower
-  towerHealth: number;
-  
-  // Meta
-  isRunning: boolean;
-  tick: (dt: number) => void;
-}
-```
+The Game State is the single source of truth for the simulation. It holds:
+*   **Resources**: Gold, Mana, Max Mana.
+*   **Combat State**: Lists of Enemies, Deck, Hand, and Discard pile.
+*   **Tower**: Health and status.
+*   **Meta**: Game running state and the main tick function.
 
 ### 3.2 The Tick System
 The `tick` function is the heart of the engine.
@@ -47,30 +31,17 @@ The `tick` function is the heart of the engine.
 
 ## 4. Data Structures
 ### 4.1 Card Entity
-```typescript
-interface Card {
-  id: string; // Unique instance ID
-  templateId: string; // "fireball", "skeleton"
-  name: string;
-  cost: number;
-  type: 'Spell' | 'Summon' | 'Enchantment';
-  effects: CardEffect[];
-}
-```
+Cards are the primary actors. They have:
+*   **Identity**: Unique ID and Template ID (e.g., "fireball").
+*   **Stats**: Cost, Name.
+*   **Type**: Spell, Summon, or Enchantment.
+*   **Effects**: A list of actions the card performs when played.
 
 ### 4.2 Enemy Entity
-```typescript
-interface Enemy {
-  id: string;
-  hp: number;
-  maxHp: number;
-  position: number; // 0 = Tower, 100 = Spawn
-  speed: number;
-  attackDamage: number;
-  attackSpeed: number;
-  nextAttack: number; // Timestamp
-}
-```
+Enemies are the primary antagonists. They have:
+*   **Stats**: HP, Max HP, Speed, Attack Damage.
+*   **Position**: A linear value from 0 (Tower) to 100 (Spawn).
+*   **Combat**: Attack Speed and Next Attack timestamp.
 
 ## 5. Persistence
 *   **Storage**: `localStorage` (initially).

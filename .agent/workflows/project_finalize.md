@@ -16,7 +16,7 @@ description: Finalize a unit of work (clean, verify, commit)
    Ensure all documentation is up to date.
    - [ ] **Product Docs**: Update `docs/` (Design, Roadmap) if features changed.
    - [ ] **Agent Docs**: Update `.agent/` (Conventions, Workflows) if processes changed.
-   - [ ] **Brain Sync**: Update `task.md` and `walkthrough.md` in your internal brain.
+   - [ ] **Brain Sync**: Update `task.md` and `walkthrough.md` (use absolute paths from system instructions).
 
 4. Artifact Cleanup (CRITICAL)
    - [ ] **Check Repo**: Ensure `task.md`, `implementation_plan.md`, and `walkthrough.md` are NOT in the repo root or `.agent/`.
