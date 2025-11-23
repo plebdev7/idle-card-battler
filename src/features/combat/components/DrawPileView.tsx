@@ -1,8 +1,8 @@
 import type React from "react";
-import { useCombatStore } from "../state/combatStore";
+import { useGameStore } from "../../../state/store";
 
 export const DrawPileView: React.FC = () => {
-	const drawSize = useCombatStore((state) => state.zones.draw.length);
+	const drawSize = useGameStore((state) => state.drawPile.length);
 
 	return (
 		<div

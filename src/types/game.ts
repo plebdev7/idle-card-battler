@@ -26,3 +26,42 @@ export interface Card {
 	cost: number;
 	damage?: number;
 }
+
+export interface CardInstance {
+	id: string;
+	defId: string;
+	zone: "DRAW" | "HAND" | "PLAY" | "DISCARD" | "VOID";
+	currentCost: number;
+	name: string;
+}
+
+export interface GameData {
+	// Resources
+	gold: number;
+	mana: number;
+	maxMana: number;
+	manaRegen: number;
+
+	// Entities
+	tower: Entity;
+	enemies: Entity[];
+	projectiles: Entity[];
+
+	// Cards & Deck Cycle
+	hand: CardInstance[]; // Replaces Card[]
+	drawPile: CardInstance[];
+	discardPile: CardInstance[];
+	voidPile: CardInstance[];
+
+	drawTimer: number;
+	drawSpeed: number;
+	maxHandSize: number;
+
+	// Wave
+	wave: WaveState;
+
+	// Meta
+	isRunning: boolean;
+	tickCount: number;
+	time: number;
+}

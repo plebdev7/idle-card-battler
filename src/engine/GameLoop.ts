@@ -1,9 +1,16 @@
 import { useEffect, useRef } from "react";
-import { useGameStore } from "./store";
+import { useGameStore } from "../state/store";
 
 const TICK_RATE = 20;
 const TICK_DT = 1 / TICK_RATE; // 0.05s
 
+/**
+ * React hook that runs the game loop using requestAnimationFrame.
+ * Implements a fixed timestep accumulator pattern to ensure deterministic game logic
+ * at 20 ticks per second, regardless of frame rate.
+ *
+ * The loop automatically starts/stops based on the `isRunning` state from the game store.
+ */
 export function useGameLoop() {
 	const tick = useGameStore((state) => state.tick);
 	const isRunning = useGameStore((state) => state.isRunning);

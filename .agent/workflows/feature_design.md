@@ -29,10 +29,17 @@ Follow this workflow when the user asks to "design" or "spec out" a specific par
         *   **Logic/Flow**: Pseudocode or step-by-step algorithms.
         *   **Edge Cases**: What happens if X and Y happen at the same time?
 
-5.  **Review & Iterate**:
+5.  **Extensibility Check**:
+    *   **CRITICAL**: Before finalizing, review your spec for extensibility:
+        *   Are values hardcoded or data-driven? (Bad: "Cost is always 3", Good: "Each card has a cost property").
+        *   Can we add new variants without changing core logic? (e.g., Can we add new card types easily?).
+        *   Are we planning for future needs without over-engineering?
+    *   If you find hardcoded values or tight coupling, revise the spec.
+
+6.  **Review & Iterate**:
     *   Use `notify_user` to present the spec.
     *   Iterate based on feedback.
 
-6.  **Finalize**:
+7.  **Finalize**:
     *   Link the new spec in `design_doc.md` (if applicable).
     *   Update `task.md` to mark the design task as complete and add Implementation tasks.

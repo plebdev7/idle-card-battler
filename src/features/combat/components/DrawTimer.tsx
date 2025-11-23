@@ -1,8 +1,9 @@
 import type React from "react";
-import { useCombatStore } from "../state/combatStore";
+import { useGameStore } from "../../../state/store";
 
 export const DrawTimer: React.FC = () => {
-	const draw = useCombatStore((state) => state.draw);
+	const drawTimer = useGameStore((state) => state.drawTimer);
+	const drawSpeed = useGameStore((state) => state.drawSpeed);
 
 	return (
 		<div
@@ -26,7 +27,7 @@ export const DrawTimer: React.FC = () => {
 				<div
 					style={{
 						height: "100%",
-						width: `${draw.timer * 100}%`,
+						width: `${drawTimer * 100}%`,
 						backgroundColor: "green",
 						transition: "width 0.1s linear",
 					}}
@@ -40,7 +41,7 @@ export const DrawTimer: React.FC = () => {
 					marginTop: "2px",
 				}}
 			>
-				{(draw.speed * (1 - draw.timer)).toFixed(1)}s
+				{(drawSpeed * (1 - drawTimer)).toFixed(1)}s
 			</div>
 		</div>
 	);

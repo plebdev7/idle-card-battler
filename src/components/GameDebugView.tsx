@@ -1,5 +1,6 @@
 import type React from "react";
-import { useGameStore } from "../store";
+import { useGameStore } from "../state/store";
+import type { Entity } from "../types/game";
 
 export const GameDebugView: React.FC = () => {
 	const {
@@ -64,19 +65,18 @@ export const GameDebugView: React.FC = () => {
 								type="button"
 								key={card.id}
 								onClick={() => playCard(card.id)}
-								disabled={mana < card.cost}
+								disabled={mana < card.currentCost}
 								style={{
 									padding: "10px",
 									border: "1px solid #333",
-									background: mana >= card.cost ? "#eef" : "#ccc",
-									cursor: mana >= card.cost ? "pointer" : "not-allowed",
+									background: mana >= card.currentCost ? "#eef" : "#ccc",
+									cursor: mana >= card.currentCost ? "pointer" : "not-allowed",
 								}}
 							>
 								<div>
 									<strong>{card.name}</strong>
 								</div>
-								<div>Cost: {card.cost}</div>
-								<div>Dmg: {card.damage}</div>
+								<div>Cost: {card.currentCost}</div>
 							</button>
 						))}
 					</div>
@@ -94,7 +94,7 @@ export const GameDebugView: React.FC = () => {
 			>
 				<h2>Battlefield</h2>
 				{enemies.length === 0 && <p>No enemies.</p>}
-				{enemies.map((enemy) => (
+				{enemies.map((enemy: Entity) => (
 					<div
 						key={enemy.id}
 						style={{
