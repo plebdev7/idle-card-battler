@@ -20,9 +20,27 @@ describe("DrawPileView", () => {
 	it("should render draw pile count with cards", () => {
 		useGameStore.setState({
 			drawPile: [
-				{ id: "card-1", name: "Card 1", currentCost: 1, defId: "test", zone: "DRAW" },
-				{ id: "card-2", name: "Card 2", currentCost: 2, defId: "test", zone: "DRAW" },
-				{ id: "card-3", name: "Card 3", currentCost: 3, defId: "test", zone: "DRAW" },
+				{
+					id: "card-1",
+					name: "Card 1",
+					currentCost: 1,
+					defId: "test",
+					zone: "DRAW",
+				},
+				{
+					id: "card-2",
+					name: "Card 2",
+					currentCost: 2,
+					defId: "test",
+					zone: "DRAW",
+				},
+				{
+					id: "card-3",
+					name: "Card 3",
+					currentCost: 3,
+					defId: "test",
+					zone: "DRAW",
+				},
 			],
 		});
 		render(<DrawPileView />);
@@ -31,7 +49,15 @@ describe("DrawPileView", () => {
 
 	it("should render with single card in pile", () => {
 		useGameStore.setState({
-			drawPile: [{ id: "card-1", name: "Card 1", currentCost: 1, defId: "test", zone: "DRAW" }],
+			drawPile: [
+				{
+					id: "card-1",
+					name: "Card 1",
+					currentCost: 1,
+					defId: "test",
+					zone: "DRAW",
+				},
+			],
 		});
 		render(<DrawPileView />);
 		expect(screen.getByText(/1/)).toBeInTheDocument();

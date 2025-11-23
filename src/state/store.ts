@@ -50,8 +50,10 @@ export const useGameStore = create<GameStore>()(
 				attackSpeed: 0,
 			},
 			state: "IDLE",
+			attackCooldown: 0,
 		},
 		enemies: [],
+		summons: [],
 		projectiles: [],
 
 		// Deck Cycle

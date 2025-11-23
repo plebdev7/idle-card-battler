@@ -16,5 +16,6 @@ export function createEnemy(id: string, position: number = 100): Entity {
 		position,
 		stats: { ...BASE_ENEMY_STATS },
 		state: "WALKING",
+		attackCooldown: 0,
 	};
 }

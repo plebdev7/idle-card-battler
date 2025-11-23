@@ -20,10 +20,34 @@ describe("DiscardPileView", () => {
 	it("should render discard pile count with cards", () => {
 		useGameStore.setState({
 			discardPile: [
-				{ id: "card-1", name: "Card 1", currentCost: 1, defId: "test", zone: "DISCARD" },
-				{ id: "card-2", name: "Card 2", currentCost: 2, defId: "test", zone: "DISCARD" },
-				{ id: "card-3", name: "Card 3", currentCost: 3, defId: "test", zone: "DISCARD" },
-				{ id: "card-4", name: "Card 4", currentCost: 4, defId: "test", zone: "DISCARD" },
+				{
+					id: "card-1",
+					name: "Card 1",
+					currentCost: 1,
+					defId: "test",
+					zone: "DISCARD",
+				},
+				{
+					id: "card-2",
+					name: "Card 2",
+					currentCost: 2,
+					defId: "test",
+					zone: "DISCARD",
+				},
+				{
+					id: "card-3",
+					name: "Card 3",
+					currentCost: 3,
+					defId: "test",
+					zone: "DISCARD",
+				},
+				{
+					id: "card-4",
+					name: "Card 4",
+					currentCost: 4,
+					defId: "test",
+					zone: "DISCARD",
+				},
 			],
 		});
 		render(<DiscardPileView />);
@@ -32,7 +56,15 @@ describe("DiscardPileView", () => {
 
 	it("should render with single card in pile", () => {
 		useGameStore.setState({
-			discardPile: [{ id: "card-1", name: "Card 1", currentCost: 1, defId: "test", zone: "DISCARD" }],
+			discardPile: [
+				{
+					id: "card-1",
+					name: "Card 1",
+					currentCost: 1,
+					defId: "test",
+					zone: "DISCARD",
+				},
+			],
 		});
 		render(<DiscardPileView />);
 		expect(screen.getByText(/1/)).toBeInTheDocument();

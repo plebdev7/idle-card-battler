@@ -1,17 +1,40 @@
+export type EntityType = "ENEMY" | "SUMMON" | "TOWER" | "PROJECTILE";
+export type EntityState =
+	| "WALKING"
+	| "ATTACKING"
+	| "IDLE"
+	| "STUNNED"
+	| "DYING"
+	| "DEAD";
+
+export interface EntityStats {
+	hp: number;
+	maxHp: number;
+	speed: number;
+	range: number;
+	damage: number;
+	attackSpeed: number; // Attacks per second
+	armor?: number;
+}
+
+export interface StatusEffect {
+	id: string;
+	type: string; // TODO: Define StatusEffectType union when implementing status effects
+	duration: number;
+	intensity?: number;
+	source?: string;
+}
+
 export interface Entity {
 	id: string;
-	type: "ENEMY" | "SUMMON" | "TOWER" | "PROJECTILE";
+	type: EntityType;
 	position: number; // 0 to 100
-	stats: {
-		hp: number;
-		maxHp: number;
-		speed: number;
-		range: number;
-		damage: number;
-		attackSpeed: number; // Attacks per second
-	};
-	state: "WALKING" | "ATTACKING" | "IDLE" | "DEAD";
+	stats: EntityStats;
+	state: EntityState;
 	targetId?: string; // Current focus
+	attackCooldown: number;
+	behavior?: Record<string, unknown>; // For specific AI overrides
+	statusEffects?: StatusEffect[];
 }
 
 export interface WaveState {
@@ -45,6 +68,7 @@ export interface GameData {
 	// Entities
 	tower: Entity;
 	enemies: Entity[];
+	summons: Entity[];
 	projectiles: Entity[];
 
 	// Cards & Deck Cycle

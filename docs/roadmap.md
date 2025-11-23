@@ -40,9 +40,9 @@
     *   [x] Consolidate stores into unified `src/state/store.ts` with Immer
     *   [x] Update all components and tests to use new structure
 *   **Session 2.2.3: Entity System**
-    *   [ ] Create Base Entity Class/Interface
-    *   [ ] Implement Movement System (1D Lane Logic)
-    *   [ ] Implement Spatial Tracking
+    *   [x] Create Base Entity Class/Interface
+    *   [x] Implement Movement System (1D Lane Logic)
+    *   [x] Implement Spatial Tracking
 *   **Session 2.2.4: Combat Logic**
     *   [ ] Implement Damage Pipeline (Mitigation, Application)
     *   [ ] Implement Projectile System

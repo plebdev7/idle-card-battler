@@ -1,4 +1,10 @@
 import type { GameData } from "../types/game";
+import {
+	cleanupDeadEntities,
+	updateEnemies,
+	updateProjectiles,
+	updateSummons,
+} from "./EntitySystem";
 
 /**
  * Processes a single game tick, updating mana regeneration, draw timer, and game time.
@@ -28,7 +34,15 @@ export function processTick(state: GameData, dt: number) {
 		state.drawTimer = Math.min(1.0, state.drawTimer + dt / state.drawSpeed);
 	}
 
-	// 3. Update Time
+	// 3. Entity Updates
+	updateEnemies(state, dt);
+	updateSummons(state, dt);
+	updateProjectiles(state, dt);
+
+	// 4. Cleanup
+	cleanupDeadEntities(state);
+
+	// 5. Update Time
 	state.time += dt;
 	state.tickCount += 1;
 }
