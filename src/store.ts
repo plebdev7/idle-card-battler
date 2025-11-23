@@ -1,20 +1,5 @@
 import { create } from "zustand";
-
-export interface Card {
-	id: string;
-	name: string;
-	cost: number;
-	damage?: number;
-}
-
-export interface Enemy {
-	id: string;
-	name: string;
-	hp: number;
-	maxHp: number;
-	speed: number;
-	position: number; // 0 to 100 (0 = Tower)
-}
+import type { Card, Entity, WaveState } from "./types/game";
 
 interface GameState {
 	// Resources
@@ -22,16 +7,22 @@ interface GameState {
 	mana: number;
 	maxMana: number;
 	manaRegen: number;
-	towerHp: number;
-	maxTowerHp: number;
 
-	// Combat
-	enemies: Enemy[];
+	// Entities
+	tower: Entity;
+	enemies: Entity[];
+	projectiles: Entity[]; // Placeholder for now
+
+	// Cards
 	hand: Card[];
+
+	// Wave
+	wave: WaveState;
 
 	// Meta
 	isRunning: boolean;
-	time: number;
+	tickCount: number; // Total ticks processed
+	time: number; // Total game time in seconds
 
 	// Actions
 	tick: (dt: number) => void;
@@ -45,17 +36,38 @@ export const useGameStore = create<GameState>((set, get) => ({
 	mana: 0,
 	maxMana: 10,
 	manaRegen: 1, // 1 mana per second
-	towerHp: 100,
-	maxTowerHp: 100,
 
+	tower: {
+		id: "tower",
+		type: "TOWER",
+		position: 0,
+		stats: {
+			hp: 100,
+			maxHp: 100,
+			speed: 0,
+			range: 0,
+			damage: 0,
+			attackSpeed: 0,
+		},
+		state: "IDLE",
+	},
 	enemies: [],
+	projectiles: [],
+
 	hand: [
 		{ id: "c1", name: "Fireball", cost: 3, damage: 10 },
 		{ id: "c2", name: "Zap", cost: 1, damage: 3 },
 		{ id: "c3", name: "Meteor", cost: 5, damage: 20 },
 	],
 
+	wave: {
+		current: 1,
+		total: 10,
+		status: "WAITING",
+	},
+
 	isRunning: false,
+	tickCount: 0,
 	time: 0,
 
 	tick: (dt: number) => {
@@ -69,12 +81,12 @@ export const useGameStore = create<GameState>((set, get) => ({
 				state.mana + state.manaRegen * dt,
 			);
 
-			// Enemy Logic (Simple movement)
-			// TODO: Implement real movement
+			// TODO: Implement full combat loop here (Entity updates, etc.)
 
 			return {
 				mana: newMana,
 				time: state.time + dt,
+				tickCount: state.tickCount + 1,
 			};
 		});
 	},
@@ -101,11 +113,17 @@ export const useGameStore = create<GameState>((set, get) => ({
 				...state.enemies,
 				{
 					id,
-					name: "Skeleton",
-					hp: 20,
-					maxHp: 20,
-					speed: 5,
+					type: "ENEMY",
 					position: 100,
+					stats: {
+						hp: 20,
+						maxHp: 20,
+						speed: 5,
+						range: 10,
+						damage: 5,
+						attackSpeed: 1,
+					},
+					state: "WALKING",
 				},
 			],
 		}));

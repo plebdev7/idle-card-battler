@@ -5,8 +5,7 @@ export const GameDebugView: React.FC = () => {
 	const {
 		mana,
 		maxMana,
-		towerHp,
-		maxTowerHp,
+		tower,
 		gold,
 		time,
 		enemies,
@@ -48,7 +47,7 @@ export const GameDebugView: React.FC = () => {
 				<div style={{ flex: 1, border: "1px solid #ccc", padding: "10px" }}>
 					<h2>Resources</h2>
 					<p>
-						Tower HP: {towerHp} / {maxTowerHp}
+						Tower HP: {tower.stats.hp} / {tower.stats.maxHp}
 					</p>
 					<p>
 						Mana: {mana.toFixed(1)} / {maxMana}
@@ -107,7 +106,8 @@ export const GameDebugView: React.FC = () => {
 						}}
 					>
 						<span>
-							{enemy.name} (HP: {enemy.hp}/{enemy.maxHp})
+							Enemy #{enemy.id.slice(0, 4)} (HP: {enemy.stats.hp}/
+							{enemy.stats.maxHp})
 						</span>
 						<span>Pos: {enemy.position.toFixed(0)}</span>
 					</div>

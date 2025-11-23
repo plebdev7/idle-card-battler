@@ -23,6 +23,7 @@
 ## 3. Gameplay Mechanics: The Idle Card System [DRAFT]
 
 ### 3.1 The "Idle" Deck Cycle [SPEC](specs/002_idle_deck_cycle.md)
+### 3.2 The Combat Loop [SPEC](specs/003_combat_loop.md)
 To make card games work in an idle format, we need to automate the "Decision Making" while keeping the "Randomness" fun.
 
 *   **The Deck**: A small, consistent deck (e.g., 8-15 cards).
