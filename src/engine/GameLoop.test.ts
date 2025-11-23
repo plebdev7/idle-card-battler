@@ -1,8 +1,8 @@
 // @vitest-environment happy-dom
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { useGameLoop } from "./gameLoop";
-import { useGameStore } from "./store";
+import { useGameStore } from "../state/store";
+import { useGameLoop } from "./GameLoop";
 
 // Mock requestAnimationFrame and cancelAnimationFrame
 const originalRAF = window.requestAnimationFrame;

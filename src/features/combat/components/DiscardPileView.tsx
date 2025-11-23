@@ -1,8 +1,8 @@
 import type React from "react";
-import { useCombatStore } from "../state/combatStore";
+import { useGameStore } from "../../../state/store";
 
 export const DiscardPileView: React.FC = () => {
-	const discardSize = useCombatStore((state) => state.zones.discard.length);
+	const discardSize = useGameStore((state) => state.discardPile.length);
 
 	return (
 		<div

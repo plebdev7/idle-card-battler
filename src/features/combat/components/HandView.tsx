@@ -1,9 +1,9 @@
 import type React from "react";
-import { useCombatStore } from "../state/combatStore";
+import { useGameStore } from "../../../state/store";
 
 export const HandView: React.FC = () => {
-	const hand = useCombatStore((state) => state.zones.hand);
-	const mana = useCombatStore((state) => state.mana);
+	const hand = useGameStore((state) => state.hand);
+	const mana = useGameStore((state) => state.mana);
 
 	return (
 		<div
@@ -27,11 +27,11 @@ export const HandView: React.FC = () => {
 						border: "1px solid #333",
 						borderRadius: "8px",
 						padding: "5px",
-						backgroundColor: mana.current >= card.currentCost ? "#fff" : "#ddd",
+						backgroundColor: mana >= card.currentCost ? "#fff" : "#ddd",
 						display: "flex",
 						flexDirection: "column",
 						justifyContent: "space-between",
-						opacity: mana.current >= card.currentCost ? 1 : 0.6,
+						opacity: mana >= card.currentCost ? 1 : 0.6,
 					}}
 				>
 					<div style={{ fontWeight: "bold", fontSize: "0.9em" }}>

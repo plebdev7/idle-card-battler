@@ -27,23 +27,30 @@
 *   **Specs**:
     *   [003_combat_loop.md](specs/003_combat_loop.md)
     *   [001_run_and_enemies.md](specs/001_run_and_enemies.md)
+*   **ADRs**:
+    *   [0002-separate-data-engine-state.md](adr/0002-separate-data-engine-state.md)
 *   **Session 2.2.1: Core Engine**
     *   [x] Implement Game Loop Class (20 TPS)
     *   [x] Set up Zustand Store for Combat State
     *   [x] Implement Tick Accumulator Logic
-*   **Session 2.2.2: Entity System**
+*   **Session 2.2.2: Architectural Refactor**
+    *   [x] Extract hardcoded data to `src/data/` (cards, enemies)
+    *   [x] Create `src/engine/` layer (GameLoop, CombatSystem)
+    *   [x] Consolidate stores into unified `src/state/store.ts` with Immer
+    *   [x] Update all components and tests to use new structure
+*   **Session 2.2.3: Entity System**
     *   [ ] Create Base Entity Class/Interface
     *   [ ] Implement Movement System (1D Lane Logic)
     *   [ ] Implement Spatial Tracking
-*   **Session 2.2.3: Combat Logic**
+*   **Session 2.2.4: Combat Logic**
     *   [ ] Implement Damage Pipeline (Mitigation, Application)
     *   [ ] Implement Projectile System
     *   [ ] Implement Collision/Range Checks
-*   **Session 2.2.4: Wave Manager**
+*   **Session 2.2.5: Wave Manager**
     *   [ ] Implement Spawning Logic
     *   [ ] Implement Wave Timers
     *   [ ] Implement Win/Loss Conditions
-*   **Session 2.2.5: Basic UI (Greybox)**
+*   **Session 2.2.6: Basic UI (Greybox)**
     *   [ ] Create Debug View Component
     *   [ ] Create Lane Visualizer (DOM-based)
 

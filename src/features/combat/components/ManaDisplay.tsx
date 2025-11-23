@@ -1,8 +1,10 @@
 import type React from "react";
-import { useCombatStore } from "../state/combatStore";
+import { useGameStore } from "../../../state/store";
 
 export const ManaDisplay: React.FC = () => {
-	const mana = useCombatStore((state) => state.mana);
+	const mana = useGameStore((state) => state.mana);
+	const maxMana = useGameStore((state) => state.maxMana);
+	const manaRegen = useGameStore((state) => state.manaRegen);
 
 	return (
 		<div
@@ -26,7 +28,7 @@ export const ManaDisplay: React.FC = () => {
 				<div
 					style={{
 						height: "100%",
-						width: `${(mana.current / mana.max) * 100}%`,
+						width: `${(mana / maxMana) * 100}%`,
 						backgroundColor: "blue",
 						transition: "width 0.1s linear",
 					}}
@@ -34,11 +36,9 @@ export const ManaDisplay: React.FC = () => {
 			</div>
 			<div style={{ display: "flex", justifyContent: "space-between" }}>
 				<span>
-					{mana.current.toFixed(1)} / {mana.max}
+					{mana.toFixed(1)} / {maxMana}
 				</span>
-				<span style={{ fontSize: "0.8em", color: "#666" }}>
-					+{mana.regenRate}/s
-				</span>
+				<span style={{ fontSize: "0.8em", color: "#666" }}>+{manaRegen}/s</span>
 			</div>
 		</div>
 	);
