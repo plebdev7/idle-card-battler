@@ -26,6 +26,7 @@
 ### Component 2.2: The Combat Loop (In Progress)
 *   **Specs**:
     *   [003_combat_loop.md](specs/003_combat_loop.md)
+    *   [004_entity_system.md](specs/004_entity_system.md)
     *   [001_run_and_enemies.md](specs/001_run_and_enemies.md)
 *   **ADRs**:
     *   [0002-separate-data-engine-state.md](adr/0002-separate-data-engine-state.md)
@@ -46,6 +47,7 @@
     *   [ ] Implement Damage Pipeline (Mitigation, Application)
     *   [ ] Implement Projectile System
     *   [ ] Implement Collision/Range Checks
+    *   [ ] Implement Basic Status Effects (Slow, Stun, Poison, Burn)
 *   **Session 2.2.5: Wave Manager**
     *   [ ] Implement Spawning Logic
     *   [ ] Implement Wave Timers
@@ -57,6 +59,7 @@
 ### Component 2.3: Future Prototype Features
 *   **Session 2.3.1: Advanced Mechanics**
     *   [ ] **Targeting System**: Advanced heuristics (e.g., Frontmost, Lowest HP).
+    *   [ ] **Advanced Status Effects**: Complex effects (Shield, Regeneration, Invulnerable), stacking rules, combos, cleansing.
     *   [ ] **Card Effects Engine**: Support for complex card behaviors beyond simple damage.
 
 ## Phase 3: The Vertical Slice
