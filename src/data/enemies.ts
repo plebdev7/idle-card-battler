@@ -8,7 +8,7 @@ export const BASE_ENEMY_STATS = {
 	damage: 5,
 	attackSpeed: 1,
 };
-
+// TODO: Extract magic numbers to constants (SPAWN_POSITION = 100, LANE_MIN = -10, LANE_MAX = 110)
 export function createEnemy(id: string, position: number = 100): Entity {
 	return {
 		id,
@@ -17,5 +17,6 @@ export function createEnemy(id: string, position: number = 100): Entity {
 		stats: { ...BASE_ENEMY_STATS },
 		state: "WALKING",
 		attackCooldown: 0,
+		statusEffects: [],
 	};
 }

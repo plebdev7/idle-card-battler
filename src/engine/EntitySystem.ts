@@ -1,4 +1,5 @@
-import type { Entity, GameData } from "../types/game";
+import type { DamageEvent, Entity, GameData } from "../types/game";
+import { processDamage } from "./DamageSystem";
 
 // --- Spatial Queries ---
 
@@ -68,9 +69,18 @@ export function updateEnemies(state: GameData, dt: number) {
 				enemy.targetId = undefined;
 			} else if (enemy.attackCooldown <= 0) {
 				// Attack!
-				// TODO: Implement damage application
+				// TODO: Extract common attack logic into shared performAttack() function (see summons L139-153)
+				const damageEvent: DamageEvent = {
+					sourceId: enemy.id,
+					targetId: target.id,
+					amount: enemy.stats.damage,
+					type: "PHYSICAL", // Default to physical for now
+				};
+				processDamage(damageEvent, enemy, target);
+
 				// console.log(`Enemy ${enemy.id} attacks ${target.id}`);
-				enemy.attackCooldown = 1 / enemy.stats.attackSpeed;
+				// Prevent division by zero: default to 0.1 attack speed (10s cooldown) if speed is 0
+				enemy.attackCooldown = 1 / Math.max(0.1, enemy.stats.attackSpeed);
 			}
 		}
 
@@ -130,8 +140,17 @@ export function updateSummons(state: GameData, dt: number) {
 				summon.targetId = undefined;
 			} else if (summon.attackCooldown <= 0) {
 				// Attack!
+				const damageEvent: DamageEvent = {
+					sourceId: summon.id,
+					targetId: target.id,
+					amount: summon.stats.damage,
+					type: "PHYSICAL", // Default to physical
+				};
+				processDamage(damageEvent, summon, target);
+
 				// console.log(`Summon ${summon.id} attacks ${target.id}`);
-				summon.attackCooldown = 1 / summon.stats.attackSpeed;
+				// Prevent division by zero: default to 0.1 attack speed (10s cooldown) if speed is 0
+				summon.attackCooldown = 1 / Math.max(0.1, summon.stats.attackSpeed);
 			}
 		}
 
@@ -156,39 +175,6 @@ export function updateSummons(state: GameData, dt: number) {
 				// If no target in range, ensure we are walking
 				summon.state = "WALKING";
 			}
-		}
-	}
-}
-
-export function updateProjectiles(state: GameData, dt: number) {
-	for (let i = state.projectiles.length - 1; i >= 0; i--) {
-		const proj = state.projectiles[i];
-		if (proj.state === "DEAD") continue;
-
-		// Move
-		// Assuming linear movement for now towards 100
-		// TODO: Handle different projectile modes (Homing, Linear)
-		proj.position += proj.stats.speed * dt;
-
-		// Collision
-		// Simple linear collision with first enemy
-		// TODO (Session 2.2.4): Make hitRadius a projectile property for different collision sizes
-		const hitRadius = 1; // Default
-		const target = state.enemies.find(
-			(e) =>
-				Math.abs(e.position - proj.position) <= hitRadius && e.state !== "DEAD",
-		);
-
-		if (target) {
-			// Hit!
-			// console.log(`Projectile ${proj.id} hit ${target.id}`);
-			proj.state = "DEAD"; // Mark for cleanup
-			// TODO: Apply damage
-		}
-
-		// Cleanup if out of bounds
-		if (proj.position > 100 || proj.position < 0) {
-			proj.state = "DEAD";
 		}
 	}
 }

@@ -6,7 +6,6 @@ import {
 	findNearestEntity,
 	isInAttackRange,
 	updateEnemies,
-	updateProjectiles,
 	updateSummons,
 } from "./EntitySystem";
 
@@ -31,7 +30,12 @@ const createEntity = (
 		...overrides.stats,
 	},
 	attackCooldown: 0,
+	statusEffects: [],
 	...overrides,
+	// Ensure statusEffects is not undefined if overrides has it as undefined
+	...(overrides.statusEffects
+		? { statusEffects: overrides.statusEffects }
+		: {}),
 });
 
 // Helper to create a mock game state
@@ -295,6 +299,28 @@ describe("EntitySystem", () => {
 			updateEnemies(state, 1.0);
 
 			expect(enemy.attackCooldown).toBeCloseTo(0.5); // 1 / attackSpeed = 1/2
+		});
+
+		it("should deal damage to target when attacking", () => {
+			const enemy = createEntity("e1", "ENEMY", 0, {
+				state: "ATTACKING",
+				attackCooldown: 0,
+				targetId: "tower",
+				stats: {
+					range: 5,
+					attackSpeed: 1,
+					speed: 0,
+					hp: 10,
+					maxHp: 10,
+					damage: 10,
+				},
+			});
+			const state = createGameState({ enemies: [enemy] });
+			// Tower HP is 100
+
+			updateEnemies(state, 1.0);
+
+			expect(state.tower.stats.hp).toBe(90); // 100 - 10
 		});
 
 		it("does not attack when cooldown > 0", () => {
@@ -606,130 +632,6 @@ describe("EntitySystem", () => {
 
 			expect(summon.state).toBe("WALKING");
 			expect(summon.targetId).toBeUndefined();
-		});
-	});
-
-	describe("updateProjectiles", () => {
-		it("moves projectiles forward", () => {
-			const projectile = createEntity("p1", "PROJECTILE", 10, {
-				stats: {
-					speed: 20,
-					hp: 1,
-					maxHp: 1,
-					range: 0,
-					damage: 5,
-					attackSpeed: 0,
-				},
-			});
-			const state = createGameState({ projectiles: [projectile] });
-
-			updateProjectiles(state, 1.0);
-
-			expect(projectile.position).toBe(30); // 10 + 20
-		});
-
-		it("detects collision with enemy", () => {
-			const enemy = createEntity("e1", "ENEMY", 15);
-			const projectile = createEntity("p1", "PROJECTILE", 14, {
-				stats: {
-					speed: 1,
-					hp: 1,
-					maxHp: 1,
-					range: 0,
-					damage: 5,
-					attackSpeed: 0,
-				},
-			});
-			const state = createGameState({
-				enemies: [enemy],
-				projectiles: [projectile],
-			});
-
-			updateProjectiles(state, 1.0);
-
-			// Projectile moves from 14 to 15, hits enemy at 15 (distance = 0 <= hitRadius 1)
-			expect(projectile.state).toBe("DEAD");
-		});
-
-		it("marks projectile DEAD when out of bounds (>100)", () => {
-			const projectile = createEntity("p1", "PROJECTILE", 95, {
-				stats: {
-					speed: 20,
-					hp: 1,
-					maxHp: 1,
-					range: 0,
-					damage: 5,
-					attackSpeed: 0,
-				},
-			});
-			const state = createGameState({ projectiles: [projectile] });
-
-			updateProjectiles(state, 1.0);
-
-			expect(projectile.position).toBeGreaterThan(100);
-			expect(projectile.state).toBe("DEAD");
-		});
-
-		it("marks projectile DEAD when out of bounds (<0)", () => {
-			const projectile = createEntity("p1", "PROJECTILE", 5, {
-				stats: {
-					speed: -20,
-					hp: 1,
-					maxHp: 1,
-					range: 0,
-					damage: 5,
-					attackSpeed: 0,
-				},
-			});
-			const state = createGameState({ projectiles: [projectile] });
-
-			updateProjectiles(state, 1.0);
-
-			expect(projectile.position).toBeLessThan(0);
-			expect(projectile.state).toBe("DEAD");
-		});
-
-		it("skips DEAD projectiles", () => {
-			const projectile = createEntity("p1", "PROJECTILE", 10, {
-				state: "DEAD",
-				stats: {
-					speed: 20,
-					hp: 1,
-					maxHp: 1,
-					range: 0,
-					damage: 5,
-					attackSpeed: 0,
-				},
-			});
-			const state = createGameState({ projectiles: [projectile] });
-
-			updateProjectiles(state, 1.0);
-
-			expect(projectile.position).toBe(10); // No movement
-		});
-
-		it("does not hit DEAD enemies", () => {
-			const enemy = createEntity("e1", "ENEMY", 25, { state: "DEAD" });
-			const projectile = createEntity("p1", "PROJECTILE", 24, {
-				stats: {
-					speed: 20,
-					hp: 1,
-					maxHp: 1,
-					range: 0,
-					damage: 5,
-					attackSpeed: 0,
-				},
-			});
-			const state = createGameState({
-				enemies: [enemy],
-				projectiles: [projectile],
-			});
-
-			updateProjectiles(state, 1.0);
-
-			// Projectile moves to 44, which is past the enemy, so it continues
-			expect(projectile.position).toBe(44);
-			expect(projectile.state).toBe("WALKING"); // Still alive, continues flying
 		});
 	});
 

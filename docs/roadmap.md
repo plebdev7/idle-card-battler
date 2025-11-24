@@ -27,6 +27,7 @@
 *   **Specs**:
     *   [003_combat_loop.md](specs/003_combat_loop.md)
     *   [004_entity_system.md](specs/004_entity_system.md)
+    *   [005_combat_logic.md](specs/005_combat_logic.md)
     *   [001_run_and_enemies.md](specs/001_run_and_enemies.md)
 *   **ADRs**:
     *   [0002-separate-data-engine-state.md](adr/0002-separate-data-engine-state.md)
@@ -55,6 +56,11 @@
 *   **Session 2.2.6: Basic UI (Greybox)**
     *   [ ] Create Debug View Component
     *   [ ] Create Lane Visualizer (DOM-based)
+*   **Session 2.2.7: Code Quality & Refactoring**
+    *   [ ] Extract shared `performAttack()` function to reduce duplication in EntitySystem
+    *   [ ] Extract magic numbers to constants (`SPAWN_POSITION`, `LANE_MIN`, `LANE_MAX`, etc.)
+    *   [ ] Address remaining TODOs in EntitySystem (stun duration, position clamping)
+    *   [ ] Address any other TODOs in the codebase
 
 ### Component 2.3: Future Prototype Features
 *   **Session 2.3.1: Advanced Mechanics**

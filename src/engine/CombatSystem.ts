@@ -2,9 +2,10 @@ import type { GameData } from "../types/game";
 import {
 	cleanupDeadEntities,
 	updateEnemies,
-	updateProjectiles,
 	updateSummons,
 } from "./EntitySystem";
+import { updateProjectiles } from "./ProjectileSystem";
+import { updateStatusEffects } from "./StatusEffectSystem";
 
 /**
  * Processes a single game tick, updating mana regeneration, draw timer, and game time.
@@ -34,12 +35,15 @@ export function processTick(state: GameData, dt: number) {
 		state.drawTimer = Math.min(1.0, state.drawTimer + dt / state.drawSpeed);
 	}
 
-	// 3. Entity Updates
+	// 3. Status Effects (Before movement/attacks so stats are fresh)
+	updateStatusEffects(state, dt);
+
+	// 4. Entity Updates
 	updateEnemies(state, dt);
 	updateSummons(state, dt);
 	updateProjectiles(state, dt);
 
-	// 4. Cleanup
+	// 5. Cleanup
 	cleanupDeadEntities(state);
 
 	// 5. Update Time

@@ -51,6 +51,7 @@ export const useGameStore = create<GameStore>()(
 			},
 			state: "IDLE",
 			attackCooldown: 0,
+			statusEffects: [],
 		},
 		enemies: [],
 		summons: [],

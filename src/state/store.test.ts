@@ -37,6 +37,7 @@ describe("useGameStore", () => {
 				},
 				state: "IDLE",
 				attackCooldown: 0,
+				statusEffects: [],
 			},
 			wave: {
 				current: 1,

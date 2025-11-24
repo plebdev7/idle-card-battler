@@ -22,6 +22,7 @@ const createTestState = (overrides?: Partial<GameData>): GameData => ({
 		},
 		state: "IDLE",
 		attackCooldown: 0,
+		statusEffects: [],
 	},
 	enemies: [],
 	summons: [],
