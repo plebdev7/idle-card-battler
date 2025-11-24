@@ -5,5 +5,5 @@ description: Run tests with coverage reporting
 1. Run Tests with Coverage
 // turbo
 ```bash
-npm test -- --coverage --run
+npm test -- --coverage --run --reporter=text --reporter=text-summary
 ```

@@ -17,7 +17,7 @@ npx biome check .
 3. Run Tests
 // turbo
 ```bash
-npm test
+npm test --run
 ```
 
 4. Build Project
