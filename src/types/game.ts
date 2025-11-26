@@ -68,12 +68,6 @@ export interface Entity {
 	projectileData?: ProjectileData; // Specific for projectiles
 }
 
-export interface WaveState {
-	current: number;
-	total: number;
-	status: "ACTIVE" | "WAITING" | "COMPLETED";
-}
-
 export interface Card {
 	id: string;
 	name: string;
@@ -87,6 +81,24 @@ export interface CardInstance {
 	zone: "DRAW" | "HAND" | "PLAY" | "DISCARD" | "VOID";
 	currentCost: number;
 	name: string;
+}
+
+export type WavePhase = "SPAWNING" | "ACTIVE" | "CLEARING" | "COMPLETED";
+
+export interface SpawnQueueEntry {
+	enemyDefId: string;
+	position: number;
+	spawnTime: number; // Absolute game time when this should spawn
+	spawned: boolean;
+}
+
+export interface WaveState {
+	current: number;
+	total: number;
+	phase: WavePhase;
+	phaseTimer: number;
+	floor: number;
+	spawnQueue: SpawnQueueEntry[];
 }
 
 export interface GameData {
@@ -114,6 +126,11 @@ export interface GameData {
 
 	// Wave
 	wave: WaveState;
+
+	// Auto-Continue
+	autoContinue: boolean;
+	autoContinueDelay: number;
+	autoContinueTimer: number;
 
 	// Meta
 	isRunning: boolean;

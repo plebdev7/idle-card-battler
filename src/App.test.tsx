@@ -12,7 +12,7 @@ describe("App", () => {
 	it("should render without crashing", () => {
 		render(<App />);
 		// App renders CombatScreen which has "Combat Debug" heading
-		expect(screen.getByText("Combat Debug")).toBeInTheDocument();
+		expect(screen.getByText("Combat Prototype")).toBeInTheDocument();
 	});
 
 	it("should render CombatScreen component", () => {

@@ -45,21 +45,38 @@
     *   [x] Implement Movement System (1D Lane Logic)
     *   [x] Implement Spatial Tracking
 *   **Session 2.2.4: Combat Logic**
-    *   [ ] Implement Damage Pipeline (Mitigation, Application)
-    *   [ ] Implement Projectile System
-    *   [ ] Implement Collision/Range Checks
-    *   [ ] Implement Basic Status Effects (Slow, Stun, Poison, Burn)
+    *   [x] Implement Damage Pipeline (Mitigation, Application)
+    *   [x] Implement Projectile System
+    *   [x] Implement Collision/Range Checks
+    *   [x] Implement Basic Status Effects (Slow, Stun, Poison, Burn, Regen)
 *   **Session 2.2.5: Wave Manager**
-    *   [ ] Implement Spawning Logic
-    *   [ ] Implement Wave Timers
-    *   [ ] Implement Win/Loss Conditions
+    *   [x] Implement Spawning Logic
+    *   [x] Implement Wave Timers
+    *   [x] Implement Win/Loss Conditions
 *   **Session 2.2.6: Basic UI (Greybox)**
-    *   [ ] Create Debug View Component
-    *   [ ] Create Lane Visualizer (DOM-based)
-*   **Session 2.2.7: Code Quality & Refactoring**
-    *   [ ] Extract shared `performAttack()` function to reduce duplication in EntitySystem
-    *   [ ] Extract magic numbers to constants (`SPAWN_POSITION`, `LANE_MIN`, `LANE_MAX`, etc.)
-    *   [ ] Address remaining TODOs in EntitySystem (stun duration, position clamping)
+    *   [x] Create Debug View Component
+    *   [x] Create Lane Visualizer (DOM-based)
+    *   [x] Create Combat Screen with Mana, Hand, Draw/Discard piles
+*   **Session 2.2.7: Restore Component 2.1 Features**
+    *   [ ] **Card Set Implementation**: Implement full 10-card starter deck from [cards_basic_set.md](specs/cards_basic_set.md)
+        *   [ ] Critical Change: We need at least one card that can generate essence. 
+        *   [ ] Update Card type to support healing, buffs, summons, status effects
+        *   [ ] Implement remaining 7 cards (Minor Heal, Frostbolt, Arcane Shield, Skeleton, Mana Potion, Rage, Study)
+        *   [ ] Add card effect execution logic (healing, buffs, debuffs, summons, card draw)
+    *   [ ] **Card Playing UI**: Restore interactive card-playing functionality
+        *   [ ] Add onClick handlers to HandView cards
+        *   [ ] Wire up playCard action from store
+        *   [ ] Add visual feedback for playable/unplayable cards
+*   **Session 2.2.8: Code Quality & Refactoring**
+    *   [ ] **Wave Manager Refactoring** (from 2025-11-25 Code Review):
+        *   [ ] Refactor `EntityFactory.ts` to data-driven approach - create `src/data/enemies.ts` with stat definitions (currently uses hardcoded if-else chain)
+        *   [ ] Extract magic numbers to constants in `WaveManager.ts` (`WAVE_CLEARING_DELAY`, `SPAWN_STAGGER_DELAY`)
+        *   [ ] Add error handling to `getWaveConfig()` - validate wave/floor inputs and handle missing configs gracefully
+        *   [ ] Consider using `crypto.randomUUID()` or `nanoid` for entity IDs (currently uses `Date.now() + Math.random()`)
+    *   [ ] **EntitySystem Refactoring**:
+        *   [ ] Extract shared `performAttack()` function to reduce duplication in EntitySystem
+        *   [ ] Extract magic numbers to constants (`SPAWN_POSITION`, `LANE_MIN`, `LANE_MAX`, etc.)
+        *   [ ] Address remaining TODOs in EntitySystem (stun duration, position clamping)
     *   [ ] Address any other TODOs in the codebase
 
 ### Component 2.3: Future Prototype Features

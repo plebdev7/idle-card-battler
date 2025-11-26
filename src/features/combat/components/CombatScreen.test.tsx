@@ -30,7 +30,7 @@ describe("CombatScreen", () => {
 
 	it("should render without crashing", () => {
 		render(<CombatScreen />);
-		expect(screen.getByText("Combat Debug")).toBeInTheDocument();
+		expect(screen.getByText("Combat Prototype")).toBeInTheDocument();
 	});
 
 	it("should call initializeGame on mount", () => {

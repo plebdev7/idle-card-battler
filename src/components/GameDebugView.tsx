@@ -15,11 +15,29 @@ export const GameDebugView: React.FC = () => {
 		toggleGame,
 		spawnEnemy,
 		playCard,
+		wave,
 	} = useGameStore();
 
 	return (
 		<div style={{ padding: "20px", fontFamily: "monospace" }}>
 			<h1>Idle Card Battler - Greybox Prototype</h1>
+
+			<div
+				style={{
+					marginBottom: "20px",
+					border: "1px solid #ccc",
+					padding: "10px",
+				}}
+			>
+				<h2>Wave Status</h2>
+				<p>Floor: {wave.floor}</p>
+				<p>
+					Wave: {wave.current} / {wave.total}
+				</p>
+				<p>Phase: {wave.phase}</p>
+				<p>Timer: {wave.phaseTimer.toFixed(1)}s</p>
+				<p>Queue: {wave.spawnQueue.filter((e) => !e.spawned).length} pending</p>
+			</div>
 
 			<div
 				style={{

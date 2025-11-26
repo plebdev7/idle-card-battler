@@ -68,9 +68,15 @@ export const useGameStore = create<GameStore>()(
 
 		wave: {
 			current: 1,
-			total: 10,
-			status: "WAITING",
+			total: 5,
+			phase: "COMPLETED",
+			phaseTimer: 0,
+			floor: 1,
+			spawnQueue: [],
 		},
+		autoContinue: true,
+		autoContinueDelay: 3,
+		autoContinueTimer: 0,
 		isRunning: false,
 		tickCount: 0,
 		time: 0,

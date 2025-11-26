@@ -19,6 +19,11 @@
     *   **No Deckbuilding**: You cannot add/remove cards from your deck during a run. Your loadout is fixed.
     *   **Death**: When the Tower falls, the run ends. You lose all temporary buffs/progress.
     *   **Reward**: You keep Gold/Essence earned. Gold is converted or lost; Essence is kept.
+3.  **Floor Transitions**:
+    *   **Fresh Start**: Each floor begins with a clean slate.
+        *   Summons and projectiles are cleared between floors.
+        *   Tower HP persists (no automatic healing).
+        *   Future: Unlock system may allow summon persistence or healing upgrades.
 
 ## 3. Gameplay Mechanics: The Idle Card System [DRAFT]
 
@@ -36,8 +41,10 @@ To make card games work in an idle format, we need to automate the "Decision Mak
     *   Cards have Mana Costs.
     *   **Shuffle**: When the Draw Pile is empty, the Discard Pile is shuffled into the Draw Pile.
 
-### 3.2 Idle Support (Full Automation) [DRAFT]
-*   **Auto-Continue**: Players can toggle an option to automatically proceed through Break Rooms.
+### 3.3 Idle Support (Full Automation) [DRAFT]
+*   **Auto-Continue**: Players can toggle an option to automatically proceed through waves and Break Rooms.
+    *   Default delay: 3 seconds between waves/floors
+    *   Simple on/off toggle (future: overall game speed setting may be added)
 *   **Logic**: The game will automatically buy the best affordable upgrade (based on simple heuristics) or save gold, then continue to the next floor after a short delay.
 
 ### 3.2 AI Logic & Progression (The "Wizard's Wisdom") [DECIDED]
@@ -96,6 +103,15 @@ The system is built to support hundreds of cards across different "Schools of Ma
 ### 5.2 The Wizard (Hero)
 *   **Talents**: Passive tree. (+Mana Regen, +Tower HP, +Draw Speed).
 *   **Robes/Staves**: Equipment that buffs specific Schools of Magic.
+
+### 5.3 Reward Structure
+*   **Gold**: Granted per wave completion.
+    *   Lost on death (run currency).
+    *   Used for temporary run upgrades in Break Rooms.
+*   **Essence**: Persistent currency (kept on death).
+    *   Generated from cards during play (NOT from floor completion).
+    *   Floor number serves as unlock/prestige gate.
+    *   Used for permanent collection upgrades (card packs, card leveling).
 
 ## 6. Enemy Design [SPEC](specs/001_run_and_enemies.md)
 Enemies demand specific answers from the player's deck.

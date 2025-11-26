@@ -6,6 +6,11 @@ import {
 } from "./EntitySystem";
 import { updateProjectiles } from "./ProjectileSystem";
 import { updateStatusEffects } from "./StatusEffectSystem";
+import {
+	checkLossCondition,
+	updateAutoContinue,
+	updateWaveManager,
+} from "./WaveManager";
 
 /**
  * Processes a single game tick, updating mana regeneration, draw timer, and game time.
@@ -22,7 +27,11 @@ export function processTick(state: GameData, dt: number) {
 		state.mana = Math.min(state.maxMana, state.mana + state.manaRegen * dt);
 	}
 
-	// 2. Draw Timer
+	// 2. Wave Management (NEW)
+	updateWaveManager(state, dt);
+	updateAutoContinue(state, dt);
+
+	// 3. Draw Timer
 	// Only advance if hand is not full
 	if (state.hand.length < state.maxHandSize) {
 		state.drawTimer += dt / state.drawSpeed;
@@ -35,18 +44,21 @@ export function processTick(state: GameData, dt: number) {
 		state.drawTimer = Math.min(1.0, state.drawTimer + dt / state.drawSpeed);
 	}
 
-	// 3. Status Effects (Before movement/attacks so stats are fresh)
+	// 4. Status Effects (Before movement/attacks so stats are fresh)
 	updateStatusEffects(state, dt);
 
-	// 4. Entity Updates
+	// 5. Entity Updates
 	updateEnemies(state, dt);
 	updateSummons(state, dt);
 	updateProjectiles(state, dt);
 
-	// 5. Cleanup
+	// 6. Cleanup
 	cleanupDeadEntities(state);
 
-	// 5. Update Time
+	// 7. Win/Loss Check (NEW)
+	checkLossCondition(state);
+
+	// 8. Update Time
 	state.time += dt;
 	state.tickCount += 1;
 }
