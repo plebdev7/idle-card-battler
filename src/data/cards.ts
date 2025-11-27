@@ -1,14 +1,6 @@
 import type { Card } from "../types/game";
+import { CARD_DEFINITIONS, STARTER_DECK_IDS } from "./cardDefinitions";
 
-export const INITIAL_DECK: Card[] = [
-	{ id: "c1", name: "Fireball", cost: 3, damage: 10 },
-	{ id: "c1", name: "Fireball", cost: 3, damage: 10 },
-	{ id: "c1", name: "Fireball", cost: 3, damage: 10 },
-	{ id: "c1", name: "Fireball", cost: 3, damage: 10 },
-	{ id: "c2", name: "Zap", cost: 1, damage: 3 },
-	{ id: "c2", name: "Zap", cost: 1, damage: 3 },
-	{ id: "c2", name: "Zap", cost: 1, damage: 3 },
-	{ id: "c2", name: "Zap", cost: 1, damage: 3 },
-	{ id: "c3", name: "Meteor", cost: 5, damage: 20 },
-	{ id: "c3", name: "Meteor", cost: 5, damage: 20 },
-];
+export const INITIAL_DECK: Card[] = STARTER_DECK_IDS.map(
+	(id) => CARD_DEFINITIONS[id],
+);

@@ -29,3 +29,7 @@ dist-ssr
 
 # Testing
 coverage/
+
+# Temporary files
+*_error.txt
+*_output*.txt

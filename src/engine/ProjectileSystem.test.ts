@@ -14,6 +14,7 @@ describe("ProjectileSystem", () => {
 			mana: 0,
 			maxMana: 10,
 			manaRegen: 1,
+			essence: 0,
 			tower: {
 				id: "tower",
 				type: "TOWER",

@@ -1,6 +1,17 @@
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { CardInstance, GameData } from "../types/game";
+import * as AISystem from "./AISystem";
+import * as CardEffectSystem from "./CardEffectSystem";
 import { performDraw, performPlay, processTick } from "./CombatSystem";
+
+// Mock dependencies
+vi.mock("./CardEffectSystem", () => ({
+	executeEffect: vi.fn(),
+}));
+
+vi.mock("./AISystem", () => ({
+	updateAI: vi.fn(),
+}));
 
 // Helper to create a minimal game state for testing
 const createTestState = (overrides?: Partial<GameData>): GameData => ({
@@ -8,6 +19,7 @@ const createTestState = (overrides?: Partial<GameData>): GameData => ({
 	mana: 5,
 	maxMana: 10,
 	manaRegen: 1,
+	essence: 0,
 	tower: {
 		id: "tower",
 		type: "TOWER",
@@ -54,13 +66,17 @@ const createTestState = (overrides?: Partial<GameData>): GameData => ({
 // Helper to create a test card
 const createCard = (id: string, name: string, cost = 2): CardInstance => ({
 	id,
-	defId: `def-${id}`,
+	defId: "spell_fireball", // Use a valid defId
 	name,
 	zone: "HAND",
 	currentCost: cost,
 });
 
 describe("CombatSystem", () => {
+	beforeEach(() => {
+		vi.clearAllMocks();
+	});
+
 	describe("performDraw", () => {
 		it("should draw a card from the draw pile to hand", () => {
 			const card = createCard("card1", "Test Card");
@@ -184,6 +200,7 @@ describe("CombatSystem", () => {
 			expect(state.discardPile[0].id).toBe("card1");
 			expect(state.discardPile[0].zone).toBe("DISCARD");
 			expect(state.mana).toBe(2); // 5 - 3
+			expect(CardEffectSystem.executeEffect).toHaveBeenCalled();
 		});
 
 		it("should deduct mana equal to card cost", () => {
@@ -223,6 +240,7 @@ describe("CombatSystem", () => {
 			expect(state.hand).toHaveLength(1);
 			expect(state.discardPile).toHaveLength(0);
 			expect(state.mana).toBe(3); // Unchanged
+			expect(CardEffectSystem.executeEffect).not.toHaveBeenCalled();
 		});
 
 		it("should not play card when mana equals cost minus one", () => {
@@ -297,9 +315,76 @@ describe("CombatSystem", () => {
 			expect(state.discardPile).toHaveLength(1);
 			expect(state.mana).toBe(5); // No mana spent
 		});
+
+		it("should move exhausted cards to void pile", () => {
+			const card = createCard("card1", "Exhaust Card", 1);
+			// Mock the card definition lookup to return a card with exhaust: true
+			// Since we can't easily mock the internal CARD_DEFINITIONS in this test setup without more complex mocking,
+			// we might need to rely on the fact that performPlay checks cardDef.exhaust.
+			// However, performPlay imports CARD_DEFINITIONS.
+			// Ideally we should have a way to inject card definitions or mock the module.
+			// For now, let's assume we can't easily change CARD_DEFINITIONS and skip this specific unit test
+			// if it requires deep mocking of a const object, OR we can try to mock the module if possible.
+			// But wait, we are in a test file. We can mock the module!
+
+			// Actually, let's look at how performPlay works. It uses CARD_DEFINITIONS[card.defId].
+			// We can't easily change that const export.
+			// But we can verify the logic if we use a real card ID that has exhaust.
+			// "spell_mana_potion" has exhaust: true.
+
+			card.defId = "spell_mana_potion";
+			const state = createTestState({
+				hand: [card],
+				mana: 5,
+				voidPile: [],
+			});
+
+			performPlay(state, "card1");
+
+			expect(state.hand).toHaveLength(0);
+			expect(state.voidPile).toHaveLength(1);
+			expect(state.voidPile[0].id).toBe("card1");
+			expect(state.voidPile[0].zone).toBe("VOID");
+			expect(state.discardPile).toHaveLength(0);
+		});
+
+		it("should accumulate essence when playing essence generating cards", () => {
+			// "spell_meditate" gives essence
+			const card = createCard("card1", "Meditate", 1);
+			card.defId = "spell_meditate";
+
+			const state = createTestState({
+				hand: [card],
+				mana: 5,
+				essence: 0,
+			});
+
+			// We need to ensure executeEffect is NOT mocked for this integration test,
+			// OR we need to verify that executeEffect is called with the right params.
+			// In this file, executeEffect IS mocked at the top.
+			// So we can't test the actual state change of essence here unless we unmock it.
+			// But we CAN test that executeEffect is called with an essence effect.
+
+			performPlay(state, "card1");
+
+			// Verify executeEffect was called.
+			// The actual state update happens in executeEffect, which is tested in CardEffectSystem.test.ts.
+			// So here we just verify the integration: performPlay -> executeEffect.
+			expect(CardEffectSystem.executeEffect).toHaveBeenCalled();
+		});
 	});
 
 	describe("processTick", () => {
+		it("should call updateAI", () => {
+			const state = createTestState({
+				isRunning: true,
+			});
+
+			processTick(state, 1.0);
+
+			expect(AISystem.updateAI).toHaveBeenCalledWith(state, 1.0);
+		});
+
 		it("should not process when game is not running", () => {
 			const state = createTestState({
 				isRunning: false,

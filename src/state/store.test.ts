@@ -11,6 +11,7 @@ describe("useGameStore", () => {
 			mana: 0,
 			maxMana: 10,
 			manaRegen: 1,
+			essence: 0,
 			hand: [],
 			drawPile: [],
 			discardPile: [],
@@ -104,7 +105,7 @@ describe("useGameStore", () => {
 				hand: [
 					{
 						id: "test1",
-						defId: "c1",
+						defId: "spell_fireball",
 						name: "Test",
 						zone: "HAND",
 						currentCost: 1,
@@ -125,7 +126,7 @@ describe("useGameStore", () => {
 				discardPile: [
 					{
 						id: "test1",
-						defId: "c1",
+						defId: "spell_fireball",
 						name: "Test",
 						zone: "DISCARD",
 						currentCost: 1,
@@ -146,7 +147,7 @@ describe("useGameStore", () => {
 				voidPile: [
 					{
 						id: "test1",
-						defId: "c1",
+						defId: "spell_fireball",
 						name: "Test",
 						zone: "VOID",
 						currentCost: 1,
@@ -202,6 +203,17 @@ describe("useGameStore", () => {
 
 			const state = useGameStore.getState();
 			expect(state.isRunning).toBe(false);
+		});
+
+		it("should initialize essence to 0", () => {
+			const { initializeGame } = useGameStore.getState();
+
+			useGameStore.setState({ essence: 100 });
+
+			initializeGame();
+
+			const state = useGameStore.getState();
+			expect(state.essence).toBe(0);
 		});
 	});
 
@@ -259,7 +271,7 @@ describe("useGameStore", () => {
 
 			const testCard = {
 				id: "test-card-1",
-				defId: "c1",
+				defId: "spell_fireball",
 				name: "Test Card",
 				zone: "HAND" as const,
 				currentCost: 2,
@@ -299,7 +311,7 @@ describe("useGameStore", () => {
 
 			const testCard = {
 				id: "test-card-1",
-				defId: "c1",
+				defId: "spell_fireball",
 				name: "Expensive Card",
 				zone: "HAND" as const,
 				currentCost: 7,

@@ -180,3 +180,18 @@ export function applyStatusEffect(entity: Entity, effect: StatusEffect) {
 		entity.statusEffects.push(effect);
 	}
 }
+
+export function createStatusEffect(
+	type: import("../types/game").StatusEffectType,
+	duration: number,
+	intensity: number,
+	sourceId?: string,
+): StatusEffect {
+	return {
+		id: `status_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+		type,
+		duration,
+		intensity,
+		sourceId,
+	};
+}

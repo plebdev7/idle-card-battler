@@ -1,4 +1,7 @@
+import { CARD_DEFINITIONS } from "../data/cardDefinitions";
 import type { GameData } from "../types/game";
+import { updateAI } from "./AISystem";
+import { executeEffect } from "./CardEffectSystem";
 import {
 	cleanupDeadEntities,
 	updateEnemies,
@@ -31,7 +34,10 @@ export function processTick(state: GameData, dt: number) {
 	updateWaveManager(state, dt);
 	updateAutoContinue(state, dt);
 
-	// 3. Draw Timer
+	// 3. AI Card Playing (NEW)
+	updateAI(state, dt);
+
+	// 4. Draw Timer
 	// Only advance if hand is not full
 	if (state.hand.length < state.maxHandSize) {
 		state.drawTimer += dt / state.drawSpeed;
@@ -44,21 +50,21 @@ export function processTick(state: GameData, dt: number) {
 		state.drawTimer = Math.min(1.0, state.drawTimer + dt / state.drawSpeed);
 	}
 
-	// 4. Status Effects (Before movement/attacks so stats are fresh)
+	// 5. Status Effects (Before movement/attacks so stats are fresh)
 	updateStatusEffects(state, dt);
 
-	// 5. Entity Updates
+	// 6. Entity Updates
 	updateEnemies(state, dt);
 	updateSummons(state, dt);
 	updateProjectiles(state, dt);
 
-	// 6. Cleanup
+	// 7. Cleanup
 	cleanupDeadEntities(state);
 
-	// 7. Win/Loss Check (NEW)
+	// 8. Win/Loss Check (NEW)
 	checkLossCondition(state);
 
-	// 8. Update Time
+	// 9. Update Time
 	state.time += dt;
 	state.tickCount += 1;
 }
@@ -102,18 +108,32 @@ export function performPlay(state: GameData, cardId: string) {
 	const cardIndex = state.hand.findIndex((c) => c.id === cardId);
 	if (cardIndex === -1) return;
 
-	const card = state.hand[cardIndex];
+	const cardInstance = state.hand[cardIndex];
 
-	if (state.mana < card.currentCost) return;
+	// Look up card definition
+	const cardDef = CARD_DEFINITIONS[cardInstance.defId];
+	if (!cardDef) {
+		console.error(`Unknown card definition: ${cardInstance.defId}`);
+		return;
+	}
+
+	if (state.mana < cardInstance.currentCost) return;
 
 	// Pay Cost
-	state.mana -= card.currentCost;
+	state.mana -= cardInstance.currentCost;
 
-	// Move to Discard
+	// Execute Effects
+	for (const effect of cardDef.effects) {
+		executeEffect(state, effect, cardInstance.id);
+	}
+
+	// Move to Discard or Void
 	state.hand.splice(cardIndex, 1);
-	card.zone = "DISCARD";
-	state.discardPile.push(card);
-
-	// TODO: Apply Card Effects
-	console.log(`Played ${card.name}`);
+	if (cardDef.exhaust) {
+		cardInstance.zone = "VOID";
+		state.voidPile.push(cardInstance);
+	} else {
+		cardInstance.zone = "DISCARD";
+		state.discardPile.push(cardInstance);
+	}
 }

@@ -63,10 +63,9 @@
         *   [ ] Update Card type to support healing, buffs, summons, status effects
         *   [ ] Implement remaining 7 cards (Minor Heal, Frostbolt, Arcane Shield, Skeleton, Mana Potion, Rage, Study)
         *   [ ] Add card effect execution logic (healing, buffs, debuffs, summons, card draw)
-    *   [ ] **Card Playing UI**: Restore interactive card-playing functionality
-        *   [ ] Add onClick handlers to HandView cards
-        *   [ ] Wire up playCard action from store
-        *   [ ] Add visual feedback for playable/unplayable cards
+    *   [ ] **Card Playing Integration**: Restore automated card playing logic
+        *   [ ] Ensure Basic AI triggers `playCard` action from store
+        *   [ ] Add visual feedback for cards being played automatically
 *   **Session 2.2.8: Code Quality & Refactoring**
     *   [ ] **Wave Manager Refactoring** (from 2025-11-25 Code Review):
         *   [ ] Refactor `EntityFactory.ts` to data-driven approach - create `src/data/enemies.ts` with stat definitions (currently uses hardcoded if-else chain)

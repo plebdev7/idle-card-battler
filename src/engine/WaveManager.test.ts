@@ -15,6 +15,7 @@ function createMockState(): GameData {
 		mana: 0,
 		maxMana: 100,
 		manaRegen: 1,
+		essence: 0,
 		tower: {
 			id: "tower",
 			type: "TOWER",

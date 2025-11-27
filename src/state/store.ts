@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { INITIAL_DECK } from "../data/cards";
-import { createEnemy } from "../data/enemies";
 import { performPlay, processTick } from "../engine/CombatSystem";
+import { createEnemy } from "../engine/EntityFactory";
 import type { Card, CardInstance, GameData } from "../types/game";
 
 /**
@@ -13,7 +13,7 @@ import type { Card, CardInstance, GameData } from "../types/game";
  */
 const createCardInstance = (card: Card): CardInstance => ({
 	// TODO: Consider using crypto.randomUUID() for guaranteed uniqueness
-	id: Math.random().toString(36).substr(2, 9),
+	id: crypto.randomUUID(),
 	defId: card.id,
 	name: card.name,
 	zone: "DRAW",
@@ -37,6 +37,7 @@ export const useGameStore = create<GameStore>()(
 		mana: 0,
 		maxMana: 10,
 		manaRegen: 1,
+		essence: 0,
 		tower: {
 			id: "tower",
 			type: "TOWER",
@@ -89,6 +90,10 @@ export const useGameStore = create<GameStore>()(
 				state.discardPile = [];
 				state.voidPile = [];
 				state.mana = 0;
+				state.essence = 0;
+				state.gold = 0;
+				state.enemies = [];
+				state.projectiles = [];
 				state.time = 0;
 				state.tickCount = 0;
 				state.isRunning = false;
@@ -113,10 +118,8 @@ export const useGameStore = create<GameStore>()(
 			}),
 
 		spawnEnemy: () => {
-			// TODO: Consider using crypto.randomUUID() for guaranteed uniqueness
-			const id = Math.random().toString(36).substr(2, 9);
 			set((state) => {
-				state.enemies.push(createEnemy(id));
+				state.enemies.push(createEnemy("BASIC_ENEMY", 100));
 			});
 		},
 	})),

@@ -68,11 +68,66 @@ export interface Entity {
 	projectileData?: ProjectileData; // Specific for projectiles
 }
 
+export type CardType = "SPELL" | "SUMMON" | "ENCHANT";
+
+export type EffectType =
+	| "DAMAGE"
+	| "HEAL"
+	| "STATUS"
+	| "BUFF"
+	| "SUMMON"
+	| "RESOURCE"
+	| "DRAW"
+	| "ESSENCE";
+
+export type TargetType =
+	| "ENEMY"
+	| "ALL_ENEMIES"
+	| "TOWER"
+	| "ALL_SUMMONS"
+	| "SELF";
+
+export interface CardEffect {
+	type: EffectType;
+	target: TargetType;
+
+	// Damage effects
+	damage?: number;
+	damageType?: DamageType;
+
+	// Heal effects
+	heal?: number;
+
+	// Status effects
+	statusType?: StatusEffectType;
+	statusDuration?: number;
+	statusIntensity?: number;
+
+	// Buff effects (temporary stat mods)
+	statModifier?: {
+		stat: keyof EntityStats;
+		value: number;
+		duration: number;
+	};
+
+	// Summon effects
+	summonDefId?: string;
+
+	// Resource effects
+	manaGain?: number;
+	essence?: number;
+
+	// Draw effects
+	drawCount?: number;
+}
+
 export interface Card {
 	id: string;
 	name: string;
 	cost: number;
-	damage?: number;
+	type: CardType;
+	effects: CardEffect[];
+	exhaust?: boolean; // If true, goes to void pile
 }
 
 export interface CardInstance {
@@ -107,6 +162,7 @@ export interface GameData {
 	mana: number;
 	maxMana: number;
 	manaRegen: number;
+	essence: number; // New persistent currency
 
 	// Entities
 	tower: Entity;

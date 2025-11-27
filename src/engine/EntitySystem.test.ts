@@ -44,6 +44,7 @@ const createGameState = (overrides: Partial<GameData> = {}): GameData => ({
 	mana: 0,
 	maxMana: 10,
 	manaRegen: 1,
+	essence: 0,
 	tower: createEntity("tower", "TOWER", 0, {
 		state: "IDLE",
 		stats: {
