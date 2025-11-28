@@ -1,3 +1,4 @@
+import { gameConfig } from "../config/gameConfig";
 import { getWaveConfig } from "../data/waves";
 import type { GameData, SpawnQueueEntry } from "../types/game";
 import { createEnemy } from "./EntityFactory";
@@ -14,8 +15,7 @@ export function updateWaveManager(state: GameData, dt: number) {
 			// Check if all enemies defeated
 			if (state.enemies.length === 0) {
 				state.wave.phase = "CLEARING";
-				// TODO: Extract magic numbers to constants (e.g., WAVE_CLEARING_DELAY)
-				state.wave.phaseTimer = 2.0; // 2 second delay
+				state.wave.phaseTimer = gameConfig.waves.clearingDelay;
 			}
 			break;
 
@@ -103,7 +103,7 @@ export function startNextFloor(state: GameData) {
 }
 
 function isFloorBoss(floor: number): boolean {
-	return floor % 10 === 0; // Every 10th floor
+	return floor % gameConfig.waves.bossFloorFrequency === 0;
 }
 
 // --- Wave Initialization ---
@@ -117,9 +117,8 @@ export function startWave(state: GameData, floor: number, waveNumber: number) {
 		const count = spawn.count || 1;
 
 		for (let i = 0; i < count; i++) {
-			// TODO: Extract magic numbers to constants (e.g., SPAWN_STAGGER_DELAY)
-			// Simple staggering for groups: 0.5s delay between units in same group
-			const staggerDelay = i * 0.5;
+			// Simple staggering for groups
+			const staggerDelay = i * gameConfig.waves.spawnStagger;
 
 			entries.push({
 				enemyDefId: spawn.enemyDefId,
@@ -156,7 +155,7 @@ export function checkLossCondition(state: GameData): boolean {
 	if (state.tower.stats.hp <= 0) {
 		state.tower.state = "DEAD";
 		state.isRunning = false;
-		// handleGameOver(state); // TODO: Implement game over
+		// Game over state is handled by UI (run stops)
 		return true;
 	}
 	return false;

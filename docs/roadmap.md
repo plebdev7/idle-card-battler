@@ -57,26 +57,39 @@
     *   [x] Create Debug View Component
     *   [x] Create Lane Visualizer (DOM-based)
     *   [x] Create Combat Screen with Mana, Hand, Draw/Discard piles
-*   **Session 2.2.7: Restore Component 2.1 Features**
-    *   [ ] **Card Set Implementation**: Implement full 10-card starter deck from [cards_basic_set.md](specs/cards_basic_set.md)
-        *   [ ] Critical Change: We need at least one card that can generate essence. 
-        *   [ ] Update Card type to support healing, buffs, summons, status effects
-        *   [ ] Implement remaining 7 cards (Minor Heal, Frostbolt, Arcane Shield, Skeleton, Mana Potion, Rage, Study)
-        *   [ ] Add card effect execution logic (healing, buffs, debuffs, summons, card draw)
-    *   [ ] **Card Playing Integration**: Restore automated card playing logic
-        *   [ ] Ensure Basic AI triggers `playCard` action from store
-        *   [ ] Add visual feedback for cards being played automatically
-*   **Session 2.2.8: Code Quality & Refactoring**
-    *   [ ] **Wave Manager Refactoring** (from 2025-11-25 Code Review):
-        *   [ ] Refactor `EntityFactory.ts` to data-driven approach - create `src/data/enemies.ts` with stat definitions (currently uses hardcoded if-else chain)
+*   **Session 2.2.7: Restore Component 2.1 Features (Complete)**
+    *   **Spec**: [007_card_set_expansion.md](specs/007_card_set_expansion.md)
+    *   [x] **Card Set Implementation**: Implement full 10-card starter deck from [cards_basic_set.md](specs/cards_basic_set.md)
+        *   [x] Critical Change: Added Essence resource and cards that generate it
+        *   [x] Update Card type to support healing, buffs, summons, status effects
+        *   [x] Implement remaining 7 cards (Minor Heal, Frostbolt, Arcane Shield, Skeleton, Mana Potion, Rage, Study)
+        *   [x] Add card effect execution logic (healing, buffs, debuffs, summons, card draw)
+    *   [x] **Card Playing Integration**: Restore automated card playing logic
+        *   [x] Implemented AISystem with Basic AI (Tier 1) - randomly plays playable cards
+        *   [x] Integrated CardEffectSystem into CombatSystem for effect execution
+*   **Session 2.2.8: Code Quality & Refactoring (In Progress)**
+    *   [/] **Wave Manager Refactoring** (from 2025-11-25 Code Review):
+        *   [x] Refactor `EntityFactory.ts` to data-driven approach - created `src/data/enemies.ts` with stat definitions
         *   [ ] Extract magic numbers to constants in `WaveManager.ts` (`WAVE_CLEARING_DELAY`, `SPAWN_STAGGER_DELAY`)
         *   [ ] Add error handling to `getWaveConfig()` - validate wave/floor inputs and handle missing configs gracefully
-        *   [ ] Consider using `crypto.randomUUID()` or `nanoid` for entity IDs (currently uses `Date.now() + Math.random()`)
+        *   [x] Use `crypto.randomUUID()` for entity and card instance IDs (replaced `Date.now() + Math.random()`)
     *   [ ] **EntitySystem Refactoring**:
         *   [ ] Extract shared `performAttack()` function to reduce duplication in EntitySystem
         *   [ ] Extract magic numbers to constants (`SPAWN_POSITION`, `LANE_MIN`, `LANE_MAX`, etc.)
         *   [ ] Address remaining TODOs in EntitySystem (stun duration, position clamping)
     *   [ ] Address any other TODOs in the codebase
+*   **Session 2.2.9: Dependency & Security Maintenance**
+    *   [ ] Resolve npm security vulnerabilities (2 moderate severity)
+    *   [ ] Address Node.js engine warnings for `@vitejs/plugin-react`
+    *   [ ] Update outdated dependencies
+    *   [ ] Run full verification suite to ensure stability
+    *   [ ] Document any breaking changes or dependency decisions in ADR if needed
+*   **Session 2.2.10: Full Greybox Integration**
+    *   [ ] Update lane visualizer to display all entity types (enemies, summons)
+    *   [ ] Display card effects visually (damage numbers, healing, buffs/debuffs)
+    *   [ ] Show essence resource in UI
+    *   [ ] Verify AI card playing is visible in real-time
+    *   [ ] Test complete combat run from wave 1 to victory/defeat
 
 ### Component 2.3: Future Prototype Features
 *   **Session 2.3.1: Advanced Mechanics**
@@ -87,7 +100,7 @@
 ## Phase 3: The Vertical Slice
 *   **Goal**: One fully polished "Floor" of gameplay.
 *   **Deliverables**:
-    *   [ ] Real UI/UX implementation (Dark Fantasy theme).
+    *   [ ] Real UI/UX implementation (Dark Fantasy theme).2
     *   [ ] Card Art (Placeholders or GenAI).
     *   [ ] Save/Load System (Persistence).
     *   [ ] First playable build for User Testing.

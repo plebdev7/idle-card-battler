@@ -1,3 +1,4 @@
+import { gameConfig } from "../config/gameConfig";
 import type { Entity, GameData } from "../types/game";
 import { processDamage } from "./DamageSystem";
 import { applyStatusEffect } from "./StatusEffectSystem";
@@ -57,7 +58,7 @@ function checkCollisions(proj: Entity, state: GameData) {
 	const hitRadius = proj.projectileData.hitRadius;
 
 	// For now, assume Entity size is 1.0
-	const ENTITY_RADIUS = 1.0;
+	const ENTITY_RADIUS = gameConfig.combat.entityRadius;
 
 	// Re-filter with correct radius logic
 	const hitTargets = state.enemies.filter(
@@ -135,7 +136,10 @@ function applyHit(proj: Entity, target: Entity) {
 }
 
 function checkBounds(proj: Entity) {
-	if (proj.position < -10 || proj.position > 110) {
+	if (
+		proj.position < gameConfig.projectiles.cullMin ||
+		proj.position > gameConfig.projectiles.cullMax
+	) {
 		proj.state = "DEAD";
 	}
 }

@@ -1,3 +1,4 @@
+import { gameConfig } from "../config/gameConfig";
 import type { Entity, GameData, StatusEffect } from "../types/game";
 import { processDamage } from "./DamageSystem";
 
@@ -37,11 +38,12 @@ function updateEntity(entity: Entity, dt: number) {
 			effect.type === "BURN" ||
 			effect.type === "REGEN"
 		) {
-			if (!effect.tickTimer) effect.tickTimer = 1.0; // Default 1 sec tick
+			if (!effect.tickTimer)
+				effect.tickTimer = gameConfig.statusEffects.tickInterval;
 			effect.tickTimer -= dt;
 			if (effect.tickTimer <= 0) {
 				applyDot(entity, effect);
-				effect.tickTimer = 1.0;
+				effect.tickTimer = gameConfig.statusEffects.tickInterval;
 			}
 		}
 
@@ -188,7 +190,7 @@ export function createStatusEffect(
 	sourceId?: string,
 ): StatusEffect {
 	return {
-		id: `status_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+		id: crypto.randomUUID(),
 		type,
 		duration,
 		intensity,

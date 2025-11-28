@@ -79,10 +79,26 @@ export const FLOOR_1_WAVES: WaveConfig[] = [
 	},
 ];
 
-export function getWaveConfig(_floor: number, wave: number): WaveConfig {
-	// TODO: Add error handling - validate wave/floor inputs and handle missing configs gracefully
-	// For prototype, just loop Floor 1 waves if requested floor > 1
-	// In real game, we'd have more data or procedural generation
+export function getWaveConfig(floor: number, wave: number): WaveConfig {
+	// Validate inputs
+	if (floor < 1) {
+		console.warn(`Invalid floor number: ${floor}. Defaulting to floor 1.`);
+		floor = 1;
+	}
+	if (wave < 1 || wave > 5) {
+		console.warn(`Invalid wave number: ${wave}. Clamping to 1-5.`);
+		wave = Math.max(1, Math.min(5, wave));
+	}
+
+	// For prototype, loop Floor 1 waves for all floors
 	const waveIndex = (wave - 1) % 5;
-	return FLOOR_1_WAVES[waveIndex];
+	const config = FLOOR_1_WAVES[waveIndex];
+
+	if (!config) {
+		throw new Error(
+			`Critical: No wave config found for floor ${floor}, wave ${wave}`,
+		);
+	}
+
+	return config;
 }

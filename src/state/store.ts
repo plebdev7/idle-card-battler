@@ -12,7 +12,6 @@ import type { Card, CardInstance, GameData } from "../types/game";
  * @returns A new card instance with a unique ID and initial state
  */
 const createCardInstance = (card: Card): CardInstance => ({
-	// TODO: Consider using crypto.randomUUID() for guaranteed uniqueness
 	id: crypto.randomUUID(),
 	defId: card.id,
 	name: card.name,

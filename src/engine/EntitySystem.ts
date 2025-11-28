@@ -1,3 +1,4 @@
+import { gameConfig } from "../config/gameConfig";
 import type { DamageEvent, Entity, GameData } from "../types/game";
 import { processDamage } from "./DamageSystem";
 
@@ -36,6 +37,18 @@ export function isInAttackRange(attacker: Entity, target: Entity): boolean {
 	return distance <= attacker.stats.range;
 }
 
+function performAttack(attacker: Entity, target: Entity) {
+	const damageEvent: DamageEvent = {
+		sourceId: attacker.id,
+		targetId: target.id,
+		amount: attacker.stats.damage,
+		type: "PHYSICAL",
+	};
+	processDamage(damageEvent, attacker, target);
+	attacker.attackCooldown =
+		1 / Math.max(gameConfig.combat.minAttackSpeed, attacker.stats.attackSpeed);
+}
+
 // --- Update Logic ---
 
 export function updateEnemies(state: GameData, dt: number) {
@@ -44,7 +57,6 @@ export function updateEnemies(state: GameData, dt: number) {
 
 		// Handle Stun
 		if (enemy.state === "STUNNED") {
-			// TODO: Handle stun duration decrement
 			continue;
 		}
 
@@ -69,25 +81,14 @@ export function updateEnemies(state: GameData, dt: number) {
 				enemy.targetId = undefined;
 			} else if (enemy.attackCooldown <= 0) {
 				// Attack!
-				// TODO: Extract common attack logic into shared performAttack() function (see summons L139-153)
-				const damageEvent: DamageEvent = {
-					sourceId: enemy.id,
-					targetId: target.id,
-					amount: enemy.stats.damage,
-					type: "PHYSICAL", // Default to physical for now
-				};
-				processDamage(damageEvent, enemy, target);
-
-				// console.log(`Enemy ${enemy.id} attacks ${target.id}`);
-				// Prevent division by zero: default to 0.1 attack speed (10s cooldown) if speed is 0
-				enemy.attackCooldown = 1 / Math.max(0.1, enemy.stats.attackSpeed);
+				performAttack(enemy, target);
 			}
 		}
 
 		if (enemy.state === "WALKING") {
 			// Move towards Tower (0)
 			enemy.position -= enemy.stats.speed * dt;
-			enemy.position = Math.max(0, enemy.position);
+			enemy.position = Math.max(gameConfig.combat.laneMin, enemy.position);
 
 			// Check for targets
 			// Priority: 1. Summons, 2. Tower
@@ -140,17 +141,7 @@ export function updateSummons(state: GameData, dt: number) {
 				summon.targetId = undefined;
 			} else if (summon.attackCooldown <= 0) {
 				// Attack!
-				const damageEvent: DamageEvent = {
-					sourceId: summon.id,
-					targetId: target.id,
-					amount: summon.stats.damage,
-					type: "PHYSICAL", // Default to physical
-				};
-				processDamage(damageEvent, summon, target);
-
-				// console.log(`Summon ${summon.id} attacks ${target.id}`);
-				// Prevent division by zero: default to 0.1 attack speed (10s cooldown) if speed is 0
-				summon.attackCooldown = 1 / Math.max(0.1, summon.stats.attackSpeed);
+				performAttack(summon, target);
 			}
 		}
 
@@ -158,7 +149,7 @@ export function updateSummons(state: GameData, dt: number) {
 			// Move if mobile
 			if (summon.stats.speed > 0 && summon.state === "WALKING") {
 				summon.position += summon.stats.speed * dt;
-				// TODO: Clamp position?
+				summon.position = Math.min(gameConfig.combat.laneMax, summon.position);
 			}
 
 			// Look for targets
