@@ -67,17 +67,17 @@
     *   [x] **Card Playing Integration**: Restore automated card playing logic
         *   [x] Implemented AISystem with Basic AI (Tier 1) - randomly plays playable cards
         *   [x] Integrated CardEffectSystem into CombatSystem for effect execution
-*   **Session 2.2.8: Code Quality & Refactoring (In Progress)**
-    *   [/] **Wave Manager Refactoring** (from 2025-11-25 Code Review):
+*   **Session 2.2.8: Code Quality & Refactoring (Complete)**
+    *   [x] **Wave Manager Refactoring** (from 2025-11-25 Code Review):
         *   [x] Refactor `EntityFactory.ts` to data-driven approach - created `src/data/enemies.ts` with stat definitions
-        *   [ ] Extract magic numbers to constants in `WaveManager.ts` (`WAVE_CLEARING_DELAY`, `SPAWN_STAGGER_DELAY`)
-        *   [ ] Add error handling to `getWaveConfig()` - validate wave/floor inputs and handle missing configs gracefully
+        *   [x] Extract magic numbers to constants in `WaveManager.ts` (`WAVE_CLEARING_DELAY`, `SPAWN_STAGGER_DELAY`)
+        *   [x] Add error handling to `getWaveConfig()` - validate wave/floor inputs and handle missing configs gracefully
         *   [x] Use `crypto.randomUUID()` for entity and card instance IDs (replaced `Date.now() + Math.random()`)
-    *   [ ] **EntitySystem Refactoring**:
-        *   [ ] Extract shared `performAttack()` function to reduce duplication in EntitySystem
-        *   [ ] Extract magic numbers to constants (`SPAWN_POSITION`, `LANE_MIN`, `LANE_MAX`, etc.)
-        *   [ ] Address remaining TODOs in EntitySystem (stun duration, position clamping)
-    *   [ ] Address any other TODOs in the codebase
+    *   [x] **EntitySystem Refactoring**:
+        *   [x] Extract shared `performAttack()` function to reduce duplication in EntitySystem
+        *   [x] Extract magic numbers to constants (`SPAWN_POSITION`, `LANE_MIN`, `LANE_MAX`, etc.)
+        *   [x] Address remaining TODOs in EntitySystem (stun duration, position clamping)
+    *   [x] Address any other TODOs in the codebase
 *   **Session 2.2.9: Dependency & Security Maintenance**
     *   [ ] Resolve npm security vulnerabilities (2 moderate severity)
     *   [ ] Address Node.js engine warnings for `@vitejs/plugin-react`
