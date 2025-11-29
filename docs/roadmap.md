@@ -78,12 +78,12 @@
         *   [x] Extract magic numbers to constants (`SPAWN_POSITION`, `LANE_MIN`, `LANE_MAX`, etc.)
         *   [x] Address remaining TODOs in EntitySystem (stun duration, position clamping)
     *   [x] Address any other TODOs in the codebase
-*   **Session 2.2.9: Dependency & Security Maintenance**
-    *   [ ] Resolve npm security vulnerabilities (2 moderate severity)
-    *   [ ] Address Node.js engine warnings for `@vitejs/plugin-react`
-    *   [ ] Update outdated dependencies
-    *   [ ] Run full verification suite to ensure stability
-    *   [ ] Document any breaking changes or dependency decisions in ADR if needed
+*   **Session 2.2.9: Dependency & Security Maintenance (Complete)**
+    *   [x] Resolve npm security vulnerabilities (2 moderate severity)
+    *   [x] Address Node.js engine warnings for `@vitejs/plugin-react`
+    *   [x] Update outdated dependencies
+    *   [x] Run full verification suite to ensure stability
+    *   [x] Document any breaking changes or dependency decisions in ADR if needed
 *   **Session 2.2.10: Full Greybox Integration**
     *   [ ] Update lane visualizer to display all entity types (enemies, summons)
     *   [ ] Display card effects visually (damage numbers, healing, buffs/debuffs)
