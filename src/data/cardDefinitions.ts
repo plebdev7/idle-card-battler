@@ -104,13 +104,13 @@ export const CARD_DEFINITIONS: Record<string, Card> = {
 // Starter deck composition
 export const STARTER_DECK_IDS = [
 	"spell_fireball",
-	"spell_fireball",
-	"spell_fireball",
-	"spell_fireball",
-	"spell_zap",
-	"spell_zap",
-	"spell_zap",
 	"spell_zap",
 	"spell_meteor",
-	"spell_meteor",
+	"spell_minor_heal",
+	"spell_frostbolt",
+	"spell_meditate",
+	"summon_skeleton",
+	"spell_mana_potion",
+	"enchant_rage",
+	"spell_study",
 ];

@@ -1,5 +1,6 @@
+import { gameConfig } from "../config/gameConfig";
 import { CARD_DEFINITIONS } from "../data/cardDefinitions";
-import type { GameData } from "../types/game";
+import type { CombatLogEventType, GameData } from "../types/game";
 import { updateAI } from "./AISystem";
 import { executeEffect } from "./CardEffectSystem";
 import {
@@ -16,7 +17,32 @@ import {
 } from "./WaveManager";
 
 /**
+ * Helper to add an entry to the combat log.
+ * Automatically trims old entries to prevent unbounded growth.
+ */
+function addCombatLog(
+	state: GameData,
+	type: CombatLogEventType,
+	message: string,
+	details?: Record<string, unknown>,
+): void {
+	state.combatLog.push({
+		id: crypto.randomUUID(),
+		timestamp: state.time,
+		type,
+		message,
+		details,
+	});
+
+	// Trim log to max entries
+	if (state.combatLog.length > gameConfig.combatLog.maxEntries) {
+		state.combatLog.shift();
+	}
+}
+
+/**
  * Processes a single game tick, updating mana regeneration, draw timer, and game time.
+
  * This function mutates the state object directly (safe via immer middleware in Zustand).
  *
  * @param state - The mutable game state (via immer draft)
@@ -93,6 +119,7 @@ export function performDraw(state: GameData) {
 		const card = state.drawPile.pop();
 		if (card) {
 			card.zone = "HAND";
+			card.drawnAt = state.time; // Track when card was drawn
 			state.hand.push(card);
 		}
 	}
@@ -113,7 +140,7 @@ export function performPlay(state: GameData, cardId: string) {
 	// Look up card definition
 	const cardDef = CARD_DEFINITIONS[cardInstance.defId];
 	if (!cardDef) {
-		console.error(`Unknown card definition: ${cardInstance.defId}`);
+		console.error(`Unknown card definition: ${cardInstance.defId} `);
 		return;
 	}
 
@@ -126,6 +153,14 @@ export function performPlay(state: GameData, cardId: string) {
 	for (const effect of cardDef.effects) {
 		executeEffect(state, effect, cardInstance.id);
 	}
+
+	// Log card play
+	addCombatLog(
+		state,
+		"CARD_PLAYED",
+		`Played ${cardInstance.name} (${cardInstance.currentCost} mana)`,
+		{ cardDefId: cardInstance.defId, cardId: cardInstance.id },
+	);
 
 	// Move to Discard or Void
 	state.hand.splice(cardIndex, 1);

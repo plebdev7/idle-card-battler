@@ -16,6 +16,9 @@ export const gameConfig = {
 
 		// Attack system
 		minAttackSpeed: 0.1, // Prevent division by zero (results in 10s cooldown)
+
+		// Death animation
+		deathAnimationDuration: 0.5, // Seconds in DYING state before DEAD
 	},
 
 	projectiles: {
@@ -36,6 +39,17 @@ export const gameConfig = {
 
 		// Floor structure
 		bossFloorFrequency: 10, // Boss appears every N floors
+	},
+
+	ai: {
+		// Card play timing
+		playDelay: 0.8, // Seconds between AI card plays
+		cardDrawDelay: 1.5, // Seconds after drawing before card can be played
+	},
+
+	combatLog: {
+		// Log settings
+		maxEntries: 50, // Maximum number of log entries to keep in memory
 	},
 } as const;
 

@@ -37,23 +37,44 @@ export function isInAttackRange(attacker: Entity, target: Entity): boolean {
 	return distance <= attacker.stats.range;
 }
 
-function performAttack(attacker: Entity, target: Entity) {
+function performAttack(state: GameData, attacker: Entity, target: Entity) {
 	const damageEvent: DamageEvent = {
 		sourceId: attacker.id,
 		targetId: target.id,
 		amount: attacker.stats.damage,
 		type: "PHYSICAL",
 	};
-	processDamage(damageEvent, attacker, target);
+	const damageDealt = processDamage(damageEvent, attacker, target);
 	attacker.attackCooldown =
 		1 / Math.max(gameConfig.combat.minAttackSpeed, attacker.stats.attackSpeed);
+
+	// Visual Effect
+	state.visualEffects.push({
+		id: crypto.randomUUID(),
+		type: "DAMAGE",
+		value: damageDealt,
+		position: target.position,
+		timestamp: Date.now(),
+	});
 }
 
 // --- Update Logic ---
 
 export function updateEnemies(state: GameData, dt: number) {
 	for (const enemy of state.enemies) {
-		if (enemy.state === "DEAD" || enemy.state === "DYING") continue;
+		if (enemy.state === "DEAD") continue;
+
+		// Handle DYING state transition
+		if (enemy.state === "DYING") {
+			if (enemy.deathTimer === undefined) {
+				enemy.deathTimer = gameConfig.combat.deathAnimationDuration;
+			}
+			enemy.deathTimer -= dt;
+			if (enemy.deathTimer <= 0) {
+				enemy.state = "DEAD";
+			}
+			continue;
+		}
 
 		// Handle Stun
 		if (enemy.state === "STUNNED") {
@@ -81,7 +102,7 @@ export function updateEnemies(state: GameData, dt: number) {
 				enemy.targetId = undefined;
 			} else if (enemy.attackCooldown <= 0) {
 				// Attack!
-				performAttack(enemy, target);
+				performAttack(state, enemy, target);
 			}
 		}
 
@@ -115,7 +136,19 @@ export function updateEnemies(state: GameData, dt: number) {
 
 export function updateSummons(state: GameData, dt: number) {
 	for (const summon of state.summons) {
-		if (summon.state === "DEAD" || summon.state === "DYING") continue;
+		if (summon.state === "DEAD") continue;
+
+		// Handle DYING state transition
+		if (summon.state === "DYING") {
+			if (summon.deathTimer === undefined) {
+				summon.deathTimer = gameConfig.combat.deathAnimationDuration;
+			}
+			summon.deathTimer -= dt;
+			if (summon.deathTimer <= 0) {
+				summon.state = "DEAD";
+			}
+			continue;
+		}
 
 		if (summon.state === "STUNNED") continue;
 
@@ -141,7 +174,7 @@ export function updateSummons(state: GameData, dt: number) {
 				summon.targetId = undefined;
 			} else if (summon.attackCooldown <= 0) {
 				// Attack!
-				performAttack(summon, target);
+				performAttack(state, summon, target);
 			}
 		}
 

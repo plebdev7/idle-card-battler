@@ -70,7 +70,7 @@ function checkCollisions(proj: Entity, state: GameData) {
 	if (hitTargets.length > 0) {
 		if (proj.projectileData.type === "AOE") {
 			for (const target of hitTargets) {
-				applyHit(proj, target);
+				applyHit(state, proj, target);
 			}
 			// AOE usually has a duration or one-time trigger.
 			// If it's a "blast" projectile, it should die after hitting.
@@ -93,7 +93,7 @@ function checkCollisions(proj: Entity, state: GameData) {
 			)[0];
 
 			if (closest) {
-				applyHit(proj, closest);
+				applyHit(state, proj, closest);
 				if (!proj.projectileData.piercing) {
 					proj.state = "DEAD";
 				}
@@ -102,7 +102,7 @@ function checkCollisions(proj: Entity, state: GameData) {
 	}
 }
 
-function applyHit(proj: Entity, target: Entity) {
+function applyHit(state: GameData, proj: Entity, target: Entity) {
 	if (!proj.projectileData) return;
 
 	// Create Damage Event
@@ -123,7 +123,16 @@ function applyHit(proj: Entity, target: Entity) {
 	// and assume it carries the stats snapshot or we just ignore source modifiers for now.
 	// Actually, `DamageCalculator` uses `source.stats.damageAmp`.
 	// Projectile stats are in `proj.stats`.
-	processDamage(damageEvent, proj, target);
+	const damageDealt = processDamage(damageEvent, proj, target);
+
+	// Visual Effect
+	state.visualEffects.push({
+		id: crypto.randomUUID(),
+		type: "DAMAGE",
+		value: damageDealt,
+		position: target.position,
+		timestamp: Date.now(),
+	});
 
 	// Apply status effects
 	if (proj.projectileData.onHitEffects) {

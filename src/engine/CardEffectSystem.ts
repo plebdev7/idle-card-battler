@@ -67,7 +67,7 @@ function executeDamageEffect(state: GameData, effect: CardEffect): void {
 	const targets = getTargets(state, effect.target);
 
 	for (const target of targets) {
-		processDamage(
+		const damageDealt = processDamage(
 			{
 				sourceId: "tower",
 				targetId: target.id,
@@ -77,15 +77,40 @@ function executeDamageEffect(state: GameData, effect: CardEffect): void {
 			state.tower,
 			target,
 		);
+
+		// Visual Effect
+		state.visualEffects.push({
+			id: crypto.randomUUID(),
+			type: "DAMAGE",
+			value: damageDealt,
+			position: target.position,
+			timestamp: Date.now(),
+		});
 	}
 }
 
 function executeHealEffect(state: GameData, effect: CardEffect): void {
 	if (effect.target === "TOWER") {
+		const healAmount = effect.heal ?? 0;
+		const actualHeal = Math.min(
+			state.tower.stats.maxHp - state.tower.stats.hp,
+			healAmount,
+		);
 		state.tower.stats.hp = Math.min(
 			state.tower.stats.maxHp,
-			state.tower.stats.hp + (effect.heal ?? 0),
+			state.tower.stats.hp + healAmount,
 		);
+
+		// Visual Effect
+		if (actualHeal > 0) {
+			state.visualEffects.push({
+				id: crypto.randomUUID(),
+				type: "HEAL",
+				value: actualHeal,
+				position: state.tower.position,
+				timestamp: Date.now(),
+			});
+		}
 	}
 }
 
@@ -101,6 +126,15 @@ function executeStatusEffect(state: GameData, effect: CardEffect): void {
 				"tower",
 			);
 			target.statusEffects.push(status);
+
+			// Visual Effect
+			state.visualEffects.push({
+				id: crypto.randomUUID(),
+				type: "DEBUFF",
+				text: effect.statusType,
+				position: target.position,
+				timestamp: Date.now(),
+			});
 		}
 	}
 }
@@ -112,6 +146,15 @@ function executeBuffEffect(state: GameData, effect: CardEffect): void {
 			const stat = effect.statModifier.stat;
 			if (typeof target.stats[stat] === "number") {
 				target.stats[stat] += effect.statModifier.value;
+
+				// Visual Effect
+				state.visualEffects.push({
+					id: crypto.randomUUID(),
+					type: "BUFF",
+					text: `+${effect.statModifier.value} ${stat}`,
+					position: target.position,
+					timestamp: Date.now(),
+				});
 			}
 		}
 	}

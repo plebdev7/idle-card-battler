@@ -2,11 +2,32 @@ import { useEffect } from "react";
 import { useGameLoop } from "../../../engine/GameLoop";
 import { useGameStore } from "../../../state/store";
 import { BattlefieldView } from "./BattlefieldView";
+import { CombatLog } from "./CombatLog";
 import { DiscardPileView } from "./DiscardPileView";
 import { DrawPileView } from "./DrawPileView";
 import { DrawTimer } from "./DrawTimer";
 import { HandView } from "./HandView";
 import { ManaDisplay } from "./ManaDisplay";
+
+const EssenceDisplay: React.FC = () => {
+	const essence = useGameStore((state) => state.essence);
+	return (
+		<div
+			style={{
+				padding: "10px",
+				backgroundColor: "#8e44ad",
+				color: "white",
+				borderRadius: "8px",
+				textAlign: "center",
+				fontWeight: "bold",
+				boxShadow: "0 2px 4px rgba(0,0,0,0.3)",
+			}}
+		>
+			<div>Essence</div>
+			<div style={{ fontSize: "24px" }}>{essence}</div>
+		</div>
+	);
+};
 
 export const CombatScreen: React.FC = () => {
 	const initializeGame = useGameStore((state) => state.initializeGame);
@@ -49,20 +70,32 @@ export const CombatScreen: React.FC = () => {
 				</button>
 			</div>
 
-			<BattlefieldView />
+			{/* Main layout: game area on left, combat log on right */}
+			<div style={{ display: "flex", gap: "20px" }}>
+				{/* Left side - main game area */}
+				<div style={{ flex: 1 }}>
+					<BattlefieldView />
 
-			<div style={{ display: "flex", gap: "40px", marginBottom: "20px" }}>
-				<div>
-					<ManaDisplay />
-					<DrawTimer />
+					<div style={{ display: "flex", gap: "40px", marginBottom: "20px" }}>
+						<div>
+							<ManaDisplay />
+							<EssenceDisplay />
+							<DrawTimer />
+						</div>
+						<div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
+							<DrawPileView />
+							<DiscardPileView />
+						</div>
+					</div>
+
+					<HandView />
 				</div>
-				<div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
-					<DrawPileView />
-					<DiscardPileView />
+
+				{/* Right side - combat log */}
+				<div>
+					<CombatLog />
 				</div>
 			</div>
-
-			<HandView />
 		</div>
 	);
 };

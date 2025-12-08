@@ -130,8 +130,16 @@ describe("HandView", () => {
 		expect(screen.getByText("Cheap")).toBeInTheDocument();
 		expect(screen.getByText("Expensive")).toBeInTheDocument();
 
-		// Check that the cards have different styling based on mana
-		const cards = container.querySelectorAll('[style*="opacity"]');
-		expect(cards.length).toBeGreaterThan(0);
+		// Check that cards have different class names based on playability
+		// Get all card divs (they're the ones with multiple classes including the base card class)
+		const allDivs = container.querySelectorAll("div[class*='card']");
+		// Filter to just the card containers (should have both base card class and playable/unplayable)
+		const cardDivs = Array.from(allDivs).filter(
+			(div) => div.className.split(" ").length > 1,
+		);
+
+		expect(cardDivs.length).toBe(2);
+		// The two cards should have different class combinations
+		expect(cardDivs[0].className).not.toBe(cardDivs[1].className);
 	});
 });

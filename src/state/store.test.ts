@@ -21,7 +21,8 @@ describe("useGameStore", () => {
 			maxHandSize: 5,
 			enemies: [],
 			projectiles: [],
-			isRunning: false,
+			visualEffects: [],
+			isRunning: true,
 			tickCount: 0,
 			time: 0,
 			tower: {
@@ -219,9 +220,9 @@ describe("useGameStore", () => {
 
 	describe("tick", () => {
 		it("should process tick when game is running", () => {
-			const { tick, toggleGame } = useGameStore.getState();
+			const { tick } = useGameStore.getState();
 
-			toggleGame(); // Start the game
+			// Game is already running from beforeEach
 			const initialTime = useGameStore.getState().time;
 
 			tick(0.05);
@@ -231,9 +232,9 @@ describe("useGameStore", () => {
 		});
 
 		it("should increment tickCount", () => {
-			const { tick, toggleGame } = useGameStore.getState();
+			const { tick } = useGameStore.getState();
 
-			toggleGame(); // Start the game
+			// Game is already running from beforeEach
 
 			tick(0.05);
 
@@ -242,10 +243,10 @@ describe("useGameStore", () => {
 		});
 
 		it("should regenerate mana based on dt", () => {
-			const { tick, toggleGame } = useGameStore.getState();
+			const { tick } = useGameStore.getState();
 
 			useGameStore.setState({ mana: 0, manaRegen: 2, maxMana: 10 });
-			toggleGame();
+			// Game is already running from beforeEach
 
 			tick(1.0); // 1 second
 
@@ -254,9 +255,9 @@ describe("useGameStore", () => {
 		});
 
 		it("should handle fractional delta time", () => {
-			const { tick, toggleGame } = useGameStore.getState();
+			const { tick } = useGameStore.getState();
 
-			toggleGame();
+			// Game is already running from beforeEach
 
 			tick(0.016); // ~16ms frame
 
@@ -334,6 +335,7 @@ describe("useGameStore", () => {
 		it("should toggle isRunning from false to true", () => {
 			const { toggleGame } = useGameStore.getState();
 
+			useGameStore.setState({ isRunning: false });
 			expect(useGameStore.getState().isRunning).toBe(false);
 
 			toggleGame();
@@ -353,6 +355,8 @@ describe("useGameStore", () => {
 
 		it("should toggle multiple times correctly", () => {
 			const { toggleGame } = useGameStore.getState();
+
+			useGameStore.setState({ isRunning: false });
 
 			toggleGame(); // false -> true
 			expect(useGameStore.getState().isRunning).toBe(true);

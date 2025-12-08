@@ -9,6 +9,8 @@ npm install
 ```
 
 2. Run Linting
+Run the linting workflow to check for issues.
+> Run `/code_lint`
 // turbo
 ```bash
 npx biome check .
@@ -17,7 +19,7 @@ npx biome check .
 3. Run Tests
 // turbo
 ```bash
-npm test --run
+npx vitest run
 ```
 
 4. Build Project

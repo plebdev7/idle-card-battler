@@ -56,6 +56,7 @@ export const useGameStore = create<GameStore>()(
 		enemies: [],
 		summons: [],
 		projectiles: [],
+		visualEffects: [],
 
 		// Deck Cycle
 		hand: [],
@@ -77,6 +78,8 @@ export const useGameStore = create<GameStore>()(
 		autoContinue: true,
 		autoContinueDelay: 3,
 		autoContinueTimer: 0,
+		aiPlayCooldown: 0,
+		combatLog: [],
 		isRunning: false,
 		tickCount: 0,
 		time: 0,
@@ -93,6 +96,9 @@ export const useGameStore = create<GameStore>()(
 				state.gold = 0;
 				state.enemies = [];
 				state.projectiles = [];
+				state.visualEffects = [];
+				state.aiPlayCooldown = 0;
+				state.combatLog = [];
 				state.time = 0;
 				state.tickCount = 0;
 				state.isRunning = false;

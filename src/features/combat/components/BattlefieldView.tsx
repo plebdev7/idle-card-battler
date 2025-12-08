@@ -1,87 +1,62 @@
 import type React from "react";
 import { useGameStore } from "../../../state/store";
 import type { Entity } from "../../../types/game";
+import styles from "./BattlefieldView.module.css";
+import { VisualEffectsOverlay } from "./VisualEffectsOverlay";
 
 export const BattlefieldView: React.FC = () => {
 	const enemies = useGameStore((state) => state.enemies);
+	const summons = useGameStore((state) => state.summons);
+	const projectiles = useGameStore((state) => state.projectiles);
 	const tower = useGameStore((state) => state.tower);
 
 	return (
-		<div
-			style={{
-				height: "300px",
-				border: "2px solid #444",
-				borderRadius: "8px",
-				position: "relative",
-				backgroundColor: "#2a2a2a",
-				overflow: "hidden",
-				marginBottom: "20px",
-			}}
-		>
+		<div className={styles.container}>
 			{/* Tower / Player Base */}
-			<div
-				style={{
-					position: "absolute",
-					left: "0",
-					bottom: "0",
-					width: "60px",
-					height: "100%",
-					backgroundColor: "#4a90e2",
-					display: "flex",
-					alignItems: "center",
-					justifyContent: "center",
-					color: "white",
-					writingMode: "vertical-rl",
-					textOrientation: "mixed",
-					zIndex: 10,
-				}}
-			>
+			<div className={styles.tower}>
 				<div>
 					Tower HP: {tower.stats.hp}/{tower.stats.maxHp}
 				</div>
 			</div>
 
+			{/* Summons */}
+			{summons.map((summon: Entity) => (
+				<div
+					key={summon.id}
+					className={styles.summon}
+					style={{ left: `${summon.position}%` }}
+				>
+					{summon.stats.hp}
+				</div>
+			))}
+
 			{/* Enemies */}
 			{enemies.map((enemy: Entity) => (
 				<div
 					key={enemy.id}
-					style={{
-						position: "absolute",
-						left: `${enemy.position}%`,
-						bottom: "20px",
-						width: "40px",
-						height: "40px",
-						backgroundColor: "#e74c3c",
-						border: "2px solid #c0392b",
-						borderRadius: "4px",
-						display: "flex",
-						flexDirection: "column",
-						alignItems: "center",
-						justifyContent: "center",
-						color: "white",
-						fontSize: "10px",
-						transition: "left 0.1s linear",
-					}}
+					className={styles.enemy}
+					style={{ left: `${enemy.position}%` }}
 				>
-					<div style={{ fontWeight: "bold" }}>E</div>
+					<div className={styles.enemyLabel}>E</div>
 					<div>
 						{enemy.stats.hp}/{enemy.stats.maxHp}
 					</div>
 				</div>
 			))}
 
-			{enemies.length === 0 && (
+			{/* Projectiles */}
+			{projectiles.map((proj: Entity) => (
 				<div
-					style={{
-						position: "absolute",
-						top: "50%",
-						left: "50%",
-						transform: "translate(-50%, -50%)",
-						color: "#666",
-					}}
-				>
-					No Enemies
-				</div>
+					key={proj.id}
+					className={styles.projectile}
+					style={{ left: `${proj.position}%` }}
+				/>
+			))}
+
+			<VisualEffectsOverlay />
+
+			{enemies.length === 0 && summons.length === 0 && (
+				<div className={styles.noCombat}>No Active Combat</div>
 			)}
 		</div>
 	);

@@ -66,6 +66,7 @@ export interface Entity {
 	behavior?: Record<string, unknown>; // For specific AI overrides
 	statusEffects: StatusEffect[]; // Made required (default empty)
 	projectileData?: ProjectileData; // Specific for projectiles
+	deathTimer?: number; // For DYING to DEAD transition
 }
 
 export type CardType = "SPELL" | "SUMMON" | "ENCHANT";
@@ -79,6 +80,34 @@ export type EffectType =
 	| "RESOURCE"
 	| "DRAW"
 	| "ESSENCE";
+
+export type VisualEffectType = "DAMAGE" | "HEAL" | "BUFF" | "DEBUFF" | "BLOCK";
+
+export interface VisualEffect {
+	id: string;
+	type: VisualEffectType;
+	value?: number; // For damage/heal
+	text?: string; // For status names
+	position: number; // Lane position (0-100)
+	timestamp: number;
+}
+
+export type CombatLogEventType =
+	| "CARD_PLAYED"
+	| "DAMAGE"
+	| "HEAL"
+	| "STATUS"
+	| "DEATH"
+	| "WAVE_START"
+	| "WAVE_COMPLETE";
+
+export interface CombatLogEntry {
+	id: string;
+	timestamp: number;
+	type: CombatLogEventType;
+	message: string;
+	details?: Record<string, unknown>;
+}
 
 export type TargetType =
 	| "ENEMY"
@@ -136,6 +165,7 @@ export interface CardInstance {
 	zone: "DRAW" | "HAND" | "PLAY" | "DISCARD" | "VOID";
 	currentCost: number;
 	name: string;
+	drawnAt?: number; // Game time when card was drawn (for draw delay)
 }
 
 export type WavePhase = "SPAWNING" | "ACTIVE" | "CLEARING" | "COMPLETED";
@@ -169,6 +199,7 @@ export interface GameData {
 	enemies: Entity[];
 	summons: Entity[];
 	projectiles: Entity[];
+	visualEffects: VisualEffect[];
 
 	// Cards & Deck Cycle
 	hand: CardInstance[]; // Replaces Card[]
@@ -187,6 +218,12 @@ export interface GameData {
 	autoContinue: boolean;
 	autoContinueDelay: number;
 	autoContinueTimer: number;
+
+	// AI System
+	aiPlayCooldown: number; // Remaining time before AI can play next card
+
+	// Combat Log
+	combatLog: CombatLogEntry[];
 
 	// Meta
 	isRunning: boolean;

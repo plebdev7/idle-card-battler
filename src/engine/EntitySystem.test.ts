@@ -59,6 +59,7 @@ const createGameState = (overrides: Partial<GameData> = {}): GameData => ({
 	enemies: [],
 	summons: [],
 	projectiles: [],
+	visualEffects: [],
 	hand: [],
 	drawPile: [],
 	discardPile: [],
@@ -77,6 +78,8 @@ const createGameState = (overrides: Partial<GameData> = {}): GameData => ({
 	autoContinue: true,
 	autoContinueDelay: 3,
 	autoContinueTimer: 0,
+	aiPlayCooldown: 0,
+	combatLog: [],
 	isRunning: true,
 	tickCount: 0,
 	time: 0,
@@ -247,7 +250,6 @@ describe("EntitySystem", () => {
 			const state = createGameState({ enemies: [enemy] });
 
 			updateEnemies(state, 1.0);
-
 			expect(enemy.position).toBe(50); // No movement
 		});
 
@@ -258,6 +260,23 @@ describe("EntitySystem", () => {
 			updateEnemies(state, 1.0);
 
 			expect(enemy.position).toBe(50); // No movement
+		});
+
+		it("transitions from DYING to DEAD after death timer expires", () => {
+			const enemy = createEntity("e1", "ENEMY", 50, {
+				state: "DYING",
+				deathTimer: 0.3,
+			});
+			const state = createGameState({ enemies: [enemy] });
+
+			// First update: should decrement timer but not transition
+			updateEnemies(state, 0.2);
+			expect(enemy.state).toBe("DYING");
+			expect(enemy.deathTimer).toBeCloseTo(0.1);
+
+			// Second update: should transition to DEAD
+			updateEnemies(state, 0.2);
+			expect(enemy.state).toBe("DEAD");
 		});
 
 		it("skips STUNNED enemies", () => {

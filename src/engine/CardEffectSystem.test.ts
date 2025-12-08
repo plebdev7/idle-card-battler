@@ -48,6 +48,7 @@ describe("CardEffectSystem", () => {
 			],
 			summons: [],
 			projectiles: [],
+			visualEffects: [],
 			hand: [],
 			drawPile: [],
 			discardPile: [],
@@ -66,6 +67,8 @@ describe("CardEffectSystem", () => {
 			autoContinue: false,
 			autoContinueDelay: 0,
 			autoContinueTimer: 0,
+			aiPlayCooldown: 0,
+			combatLog: [],
 			isRunning: true,
 			tickCount: 0,
 			time: 0,
@@ -82,6 +85,21 @@ describe("CardEffectSystem", () => {
 
 		executeEffect(mockState, effect, "card1");
 		expect(mockState.enemies[0].stats.hp).toBe(10); // 20 - 10
+	});
+
+	it("should create visual effect when executing DAMAGE effect", () => {
+		const effect: CardEffect = {
+			type: "DAMAGE",
+			target: "ENEMY",
+			damage: 10,
+			damageType: "MAGICAL",
+		};
+
+		executeEffect(mockState, effect, "card1");
+		expect(mockState.visualEffects).toHaveLength(1);
+		expect(mockState.visualEffects[0].type).toBe("DAMAGE");
+		expect(mockState.visualEffects[0].value).toBe(10);
+		expect(mockState.visualEffects[0].position).toBe(10); // Enemy position
 	});
 
 	it("should execute HEAL effect", () => {

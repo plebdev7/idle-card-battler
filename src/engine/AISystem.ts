@@ -1,3 +1,4 @@
+import { gameConfig } from "../config/gameConfig";
 import { CARD_DEFINITIONS } from "../data/cardDefinitions";
 import type { CardEffect, CardInstance, GameData } from "../types/game";
 import { performPlay } from "./CombatSystem";
@@ -5,8 +6,15 @@ import { performPlay } from "./CombatSystem";
 /**
  * Basic AI decision logic (Tier 1: Random playable card)
  * Called every tick when the game is running.
+ * Uses a cooldown timer to space out card plays for better visibility.
  */
-export function updateAI(state: GameData, _dt: number): void {
+export function updateAI(state: GameData, dt: number): void {
+	// Decrement cooldown timer
+	if (state.aiPlayCooldown > 0) {
+		state.aiPlayCooldown = Math.max(0, state.aiPlayCooldown - dt);
+		return;
+	}
+
 	// Find all playable cards in hand
 	const playableCards = state.hand.filter((card) =>
 		isCardPlayable(state, card),
@@ -18,12 +26,23 @@ export function updateAI(state: GameData, _dt: number): void {
 	const randomCard =
 		playableCards[Math.floor(Math.random() * playableCards.length)];
 	performPlay(state, randomCard.id);
+
+	// Reset cooldown after playing a card
+	state.aiPlayCooldown = gameConfig.ai.playDelay;
 }
 
 /**
  * Helper to determine if a card can be played.
  */
 export function isCardPlayable(state: GameData, card: CardInstance): boolean {
+	// Check if card was just drawn (needs time to be visible)
+	if (card.drawnAt !== undefined) {
+		const timeSinceDraw = state.time - card.drawnAt;
+		if (timeSinceDraw < gameConfig.ai.cardDrawDelay) {
+			return false; // Card too fresh, let player see it first
+		}
+	}
+
 	// Check mana
 	if (state.mana < card.currentCost) return false;
 

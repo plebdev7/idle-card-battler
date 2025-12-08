@@ -4,10 +4,11 @@ description: Finalize a unit of work (clean, verify, commit)
 
 1. Verify Codebase
    Run the verification workflow to ensure everything is in order.
-   > Run `/verify`
+   > Run `/project_verify`
 
 2. Clean Up
    Check for any temporary files that shouldn't be committed.
+   > Run `/project_clean`
    - [ ] Remove temporary test files
    - [ ] Remove unused artifacts
    - [ ] Check `.gitignore` for any new patterns needed

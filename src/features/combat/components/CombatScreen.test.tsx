@@ -73,4 +73,47 @@ describe("CombatScreen", () => {
 		// HandView renders "Hand Empty" when hand is empty
 		expect(screen.getByText("Hand Empty")).toBeInTheDocument();
 	});
+
+	it("should render EssenceDisplay component", () => {
+		render(<CombatScreen />);
+		// EssenceDisplay renders "Essence" heading
+		expect(screen.getByText("Essence")).toBeInTheDocument();
+	});
+
+	it("should display essence value", () => {
+		useGameStore.setState({ essence: 42 });
+		render(<CombatScreen />);
+		expect(screen.getByText("42")).toBeInTheDocument();
+	});
+
+	it("should integrate all combat UI components together", () => {
+		useGameStore.setState({
+			mana: 10,
+			maxMana: 10,
+			essence: 5,
+			drawTimer: 2.5,
+			hand: [],
+			drawPile: [
+				{
+					id: "1",
+					defId: "fireball",
+					zone: "DRAW",
+					currentCost: 3,
+					name: "Fireball",
+				},
+			],
+			discardPile: [],
+		});
+
+		render(<CombatScreen />);
+
+		// Verify all major components are present
+		expect(screen.getByText("Combat Prototype")).toBeInTheDocument();
+		expect(screen.getByText("Mana")).toBeInTheDocument();
+		expect(screen.getByText("Essence")).toBeInTheDocument();
+		expect(screen.getByText("Draw Timer")).toBeInTheDocument();
+		expect(screen.getByText("Draw")).toBeInTheDocument();
+		expect(screen.getByText("Discard")).toBeInTheDocument();
+		expect(screen.getByText(/Tower HP/)).toBeInTheDocument();
+	});
 });
